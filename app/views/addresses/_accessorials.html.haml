@@ -1,0 +1,19 @@
+- accordion_id = Random.rand(10000)
+- if address_type == "origin"
+  - accessorials = Dictionary.for_code('pickup_location_types')
+- else
+  - accessorials = Dictionary.for_code('delivery_location_types')
+.panel-group{id: "accordion_#{accordion_id}"}
+  .panel.panel-white
+    .panel-heading
+      %h4.panel-title
+        %a{'data-toggle' => 'collapse', 'data-parent' => "#accordion_#{accordion_id}", 'href' => "#collapse_#{accordion_id}"}
+          %span.glyphicon.glyphicon-plus
+          = "Select #{address_type.humanize} Address Accessorials"
+    .panel-collapse.collapse{id: "collapse_#{accordion_id}"}
+      .panel-body
+        .form-group
+          - accessorials.each do |acc|
+            .checkbox
+              %label
+                %input{type: 'checkbox', name: "#{fragment_name}[accessorials][]", value: acc.key, checked: (address.accessorials && address.accessorials.include?(acc.key))}= acc.name

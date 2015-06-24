@@ -1,0 +1,126 @@
+%table.table.table-bordered.table-condensed
+  %thead
+    %tr
+      %th Carrier
+      %th Price
+      %th Est. Transit Time
+      %th Est. Delivery
+      %th.actions
+  %tbody
+    - @shipment.sorted_quotes.each_with_index do |quote,i|
+      %tr.quote-row{'data-id' => quote['carrier_key']}
+        %td
+          - carrier = quote['carrier_key']
+          %a{'data-toggle' => 'modal', 'data-target' => "#carrier_#{carrier}"}
+            = quote['display_name']
+            %i.glyphicon.glyphicon-zoom-in
+          .modal.fade{:id => "carrier_#{carrier}", :tabindex => "-1", :role => "dialog", 'aria-hidden' => 'true'}
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  %button.close{:type => 'button', 'data-dismiss' => 'modal'}
+                    .span{'aria-hidden' => 'true'} &times;
+                    .span.sr-only Close
+                  %h4.modal-title= quote['display_name']
+                .modal-body
+                  .row
+                    .col-md-10.col-md-offset-1
+                      .row
+                        %b
+                          %h5 For more information about this carrier visit the links below:
+                          %br
+                          / Need to replace href with a carrier's About page
+                      .row
+                        .center
+                          =link_to quote['display_name']+' - Info', 'http://www.yahoo.com', class: "btn btn-primary"
+                      %br
+                      .row
+                        .center
+                          =link_to 'Terms & Conditions', 'http://www.yahoo.com', class: "btn btn-primary"
+                      %br
+                  
+
+                      / .row
+                      /   %br
+                      /   %br
+                      /   %b
+                      /     %h5 To view the Terms and Conditions of this carrier visit:
+                      /     / Need to replace href's with a carrier's Terms link
+                      /     =link_to "Terms & Conditions", 'http://www.yahoo.com', class: "btn btn-primary"
+                          
+
+                .modal-footer
+                  %button.btn.btn-default{:type => 'button', 'data-dismiss' => 'modal'} Close
+        %td= format("$%.2f",quote['total_price'].to_f + @shipment.shipx_fee + @shipment.processing_fee(quote['total_price'].to_f))
+        %td= pluralize(quote['delivery_days'].to_i, "day")
+        %td= (@shipment.pickup_date + quote['delivery_days'].to_i.days).strftime("%Y-%m-%d")
+        %td
+          %a.btn.btn-primary.btn-xs{'data-toggle' => 'modal', 'data-target' => "#modal_#{i}"} Details
+          .modal.fade{:id => "modal_#{i}", :tabindex => "-1", :role => "dialog", 'aria-hidden' => 'true'}
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  %button.close{:type => 'button', 'data-dismiss' => 'modal'}
+                    .span{'aria-hidden' => 'true'} &times;
+                    .span.sr-only Close
+                  %h4.modal-title Quote Details
+                .modal-body
+                  %table.table.table-striped
+                    %tr
+                      %td Freight Charge
+                      %td.text-right= format("$%.2f",quote["total_freight_price"].to_f)
+
+                    - if quote['shipment_accessorials']['accessorial'].is_a?(Hash) then accs = [quote['shipment_accessorials']['accessorial']] else accs =quote['shipment_accessorials']['accessorial'] end
+                    - accs.each do |acc|
+                      %tr
+                        %td= acc['description']
+                        %td.text-right= format("$%.2f",acc['price'].to_f)
+
+                    - if quote['pickup_accessorials']
+                      - if quote['pickup_accessorials']['accessorial'].is_a?(Hash) then accs = [quote['pickup_accessorials']['accessorial']] else accs = quote['pickup_accessorials']['accessorial'] end
+                      - accs.each do |acc|
+                        %tr
+                          %td= acc['description']
+                          %td.text-right= format("$%.2f",acc['price'].to_f)
+
+                    - if quote['delivery_accessorials']
+                      - if quote['delivery_accessorials']['accessorial'].is_a?(Hash) then accs = [quote['delivery_accessorials']['accessorial']] else accs = quote['delivery_accessorials']['accessorial'] end
+                      - accs.each do |acc|
+                        %tr
+                          %td= acc['description']
+                          %td.text-right= format("$%.2f",acc['price'].to_f)
+
+                    - if quote['pickup_location_accessorial']
+                      %tr
+                        %td= quote['pickup_location_accessorial']['description']
+                        %td.text-right= format("$%.2f",quote['pickup_location_accessorial']['price'].to_f)
+
+
+                    - if quote['delivery_location_accessorial']
+                      %tr
+                        %td= quote['delivery_location_accessorial']['description']
+                        %td.text-right= format("$%.2f",quote['delivery_location_accessorial']['price'].to_f)
+
+                    -#- if quote['freight_charge_breakdown'] && quote['freight_charge_breakdown']['freight_charge'] && quote['freight_charge_breakdown']['freight_charge']['accessorials']
+                    -#  - if quote['freight_charge_breakdown']['accessorial'].is_a?(Hash) then accs = [quote['freight_charge_breakdown']['accessorial']] else accs = quote['delivery_accessorials']['accessorial'] end
+                    -#  - quote['freight_charge_breakdown']['freight_charge']['accessorials']['accessorial'].each do |fc|
+                    -#    %tr
+                    -#      %td= fc['description']
+                    -#      %td.text-right= format("$%.2f",fc['price'].to_f)
+
+                    %tr
+                      %td Processing Fee
+                      %td.text-right= format("$%.2f",@shipment.processing_fee(quote['total_price'].to_f).to_f)
+                    %tr{:style => 'border-top: 1px solid black'}
+
+                    %tr
+                      %td Booking Fee
+                      %td.text-right= format("$%.2f",@shipment.shipx_fee.to_f)
+                    %tr{:style => 'border-top: 1px solid black'}
+                      %td
+                        %b Total
+                      %td.text-right
+                        %b= format("$%.2f",quote['total_price'].to_f + @shipment.shipx_fee + @shipment.processing_fee(quote['total_price'].to_f))
+
+                .modal-footer
+                  %button.btn.btn-default{:type => 'button', 'data-dismiss' => 'modal'} Close

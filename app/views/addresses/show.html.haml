@@ -1,0 +1,37 @@
+%p#notice= notice
+%p
+  %strong Company name:
+  = @address.company_name
+%p
+  %strong Contact name:
+  = @address.contact_name
+%p
+  %strong Address 1:
+  = @address.address_1
+%p
+  %strong Address 2:
+  = @address.address_2
+%p
+  %strong City:
+  = @address.city
+%p
+  %strong State:
+  = @address.state_id
+%p
+  %strong Zipcode:
+  = @address.zipcode
+%p
+  %strong Phone:
+  = @address.phone
+%p
+  %strong Fax:
+  = @address.fax
+%p
+  %strong Email:
+  = @address.email
+%p
+  %strong Close time:
+  = @address.close_time
+= link_to 'Edit', edit_address_path(@address)
+|
+\#{link_to 'Back', addresses_path}

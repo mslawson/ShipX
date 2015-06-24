@@ -1,0 +1,115 @@
+#shipment_parts-summary{'data-id' => @shipment.id}
+  = form_for @shipment, :url => shipment_shipment_part_path(@shipment, params[:id]), :as => :shipment do |f|
+
+    = render partial: 'shipment_sidebar', locals: {temp: 'results', shipment: @shipment}
+
+    .col-md-9.pad-30.extend-30.with-sidebar
+      = render 'progress'
+      %h1 Shipment Details
+
+      .col-md-12.pad-0
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title Shipment Details
+          .panel-body
+            - if @shipment.errors.count > 0
+              .alert.alert-danger
+                %b Error:
+                = @shipment.errors.to_a.join(", ")
+
+            .row
+              .col-md-12
+                .row
+                  .col-md-12
+                    %b Ready for Pickup On:
+                    = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'location_info')
+                    %br
+                    = @shipment.pickup_date.strftime("%Y-%m-%d %l:%M %p")
+                    %br
+                    %br
+                .row
+                  .col-md-6
+                    %b Origin:
+                    = render partial: 'addresses/fragment', locals: {address_type: 'origin', fragment_name: "shipment[origin_address_attributes]", address: @shipment.origin_address}
+                  .col-md-6
+                    %b Destination:
+                    = render partial: 'addresses/fragment', locals: {address_type: 'destination', fragment_name: "shipment[destination_address_attributes]", address: @shipment.destination_address}
+
+            .row
+              .col-md-12
+                %h4.subtitle
+                  Freight
+                  = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'freight')
+                = render partial: 'shipment/freight_ro', locals: {shipment: @shipment, readonly: false, show_nmfc: true}
+
+            .row
+              .col-md-12
+                %h4.subtitle
+                  Selected Quote
+                  = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'results')
+            
+            .col-md-12.well
+              - quote = @shipment.selected_quote_object
+              .col-md-6
+                %table.invisible-table
+                  %tr
+                    %td.text-left
+                      %b Carrier
+                    %td.text-right
+                      = quote["display_name"]
+                  %tr
+                    %td.text-left
+                      %b Delivery Time
+                    %td.text-right
+                      = pluralize(quote["delivery_days"].to_i,"day")
+                  %tr
+                    %td.text-left
+                      %b Estimated Delivery
+                    %td.text-right
+                      = (@shipment.pickup_date + quote['delivery_days'].to_i.days).strftime("%Y-%m-%d")
+
+              .col-md-6
+                %table.invisible-table
+                  %tr
+                    %td.text-left
+                      %b Total Price
+                    %td.text-right
+                      = format("$%.2f",@shipment.total_price)
+
+            - unless user_signed_in?
+              .row
+                .col-md-12
+                  %h4.subtitle Login or Create Account
+
+              .col-md-12.well
+                .col-md-6
+                  %h4 Login
+                  .form-group
+                    %label Email
+                    %input.form-control{:placeholder => 'Email Address', :name => 'shipment[login_email]'}
+
+                  .form-group
+                    %label Password
+                    %input.form-control{:type => 'password', :name => 'shipment[login_password]'}
+
+                .col-md-6
+                  %h4 Create Account
+                  .form-group
+                    %label Email
+                    %input.form-control{:placeholder => 'Email Address', :name => 'shipment[register_email]'}
+
+                  .form-group
+                    %label Password
+                    %input.form-control{:type => 'password', :name => 'shipment[register_password]' }
+
+                  .form-group
+                    %label Confirm Password
+                    %input.form-control{:type => 'password', :name => 'shipment[register_password_confirmation]'}
+
+
+            .col-md-12.well
+              One step to go... You will review your order before making payment!
+
+            %button.btn.btn-primary{:name => 'commit', :id => 'continue-button', :value => "continue"} Review Order
+
+= render :partial => 'shared/terms_and_conditions'

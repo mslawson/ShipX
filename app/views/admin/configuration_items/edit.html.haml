@@ -1,0 +1,9 @@
+.row{style: 'margin-top: 25px;'}
+  .col-md-8.col-md-offset-2
+    = form_for @configuration_item, :url => admin_configuration_item_path(@configuration_item), :as => :configuration_item do |f|
+      .form-group
+        = f.label @configuration_item.friendly_name
+        = f.text_field :configuration_value, class: ['form-control']
+      .form-group
+        = f.submit "Save", class: ['btn', 'btn-info']
+

@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">myFreightWorld Quote Book Service</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="GenerateInternationalQuotes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="shipment" type="tns:InternationalShipment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InternationalShipment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PickupDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="OriginCountryID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="OriginPortID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OriginZip" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationCountryID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationPortID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DestinationZip" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalWeight" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="WeightUnit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Class" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfPieces" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Length" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Height" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="DimensionUnit" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeclaredValue" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeInsurance" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeCustoms" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsExport" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GenerateInternationalQuotesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateInternationalQuotesResult" type="tns:ArrayOfInternationalQuote" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInternationalQuote">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InternationalQuote" nillable="true" type="tns:InternationalQuote" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InternationalQuote">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteID" type="s1:guid" />
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteResultID" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="IntlCarrier" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IntlTransitTime" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IntlPrice" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="DomesticCarrier" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DomesticTransitTime" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DomesticPrice" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GenerateQuotes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="shipment" type="tns:Shipment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Shipment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RecordType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ShipmentID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VendorID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HazardousMaterialsPhone" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PickupReadyDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Origin" type="tns:Location" />
+          <s:element minOccurs="0" maxOccurs="1" name="Destination" type="tns:Location" />
+          <s:element minOccurs="0" maxOccurs="1" name="ShipmentAccessorials" type="tns:ArrayOfAccessorial" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightItems" type="tns:ArrayOfFreight" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExtraBOLInfo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SpecialInstructions" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidationProfileID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Location">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CompanyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Street1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Street2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zipcode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fax" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CloseTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="PurchaseOrder" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocationTypeAccessorial" type="tns:Accessorial" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Accessorial">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccessorialKey" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cost" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAccessorial">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Accessorial" nillable="true" type="tns:Accessorial" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFreight">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Freight" nillable="true" type="tns:Freight" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Freight">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Weight" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightClass" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HandlingUnitsType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumHandlingUnits" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumPieces" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nmfc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sub" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PurchaseOrder" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dimensions" type="tns:Dimension" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightIdentifier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightAccessorials" type="tns:ArrayOfAccessorial" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Dimension">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Length" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Height" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NonQuotedShipment">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Shipment">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TotalFreightCost" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="TotalFreightPrice" type="s:double" />
+              <s:element minOccurs="0" maxOccurs="1" name="CarrierKey" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="VolumeShipment">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:NonQuotedShipment">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="VolumeID" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="TruckloadShipment">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:NonQuotedShipment">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="RoadMiles" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="UseRoadMiles" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="Pro" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GenerateQuotesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateQuotesResult" type="tns:QuoteResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuoteResults">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="QuoteKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Quotes" type="tns:ArrayOfQuote" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfQuote">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Quote" nillable="true" type="tns:Quote" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Quote">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BookingKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CarrierKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CarrierSCAC" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractOwnership" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractOwnershipKey" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeliveryDays" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalCost" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalPrice" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalFreightCost" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalFreightPrice" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="PickupLocationAccessorial" type="tns:Accessorial" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryLocationAccessorial" type="tns:Accessorial" />
+          <s:element minOccurs="0" maxOccurs="1" name="ShipmentAccessorials" type="tns:ArrayOfAccessorial" />
+          <s:element minOccurs="0" maxOccurs="1" name="PickupAccessorials" type="tns:ArrayOfAccessorial" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryAccessorials" type="tns:ArrayOfAccessorial" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightChargeBreakdown" type="tns:ArrayOfFreightCharge" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFreightCharge">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FreightCharge" nillable="true" type="tns:FreightCharge" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FreightCharge">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Cost" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="FreightItemNumber" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightIdentifier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EstimatedClass" type="tns:FreightEstimation" />
+          <s:element minOccurs="0" maxOccurs="1" name="Accessorials" type="tns:ArrayOfAccessorial" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FreightEstimation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Classification" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaximumAverageValue" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SimpleQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="originZip" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="destinationZip" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="weight" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="freightClass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SimpleQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SimpleQuoteResult" type="tns:QuoteResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookShipmentFromQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="bookingKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookShipmentFromQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookShipmentFromQuoteResult" type="tns:BookingResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BookingResults">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Bol" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BolFileLocation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TerminalOriginationCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TerminalOriginationPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TerminalDestinationCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TerminalDestinationPhone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="BookShipmentNoQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="shipment" type="tns:Shipment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookShipmentNoQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookShipmentNoQuoteResult" type="tns:BookingResults" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetShipmentStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="bol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetShipmentStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetShipmentStatusResult" type="tns:ShipmentStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ShipmentStatus">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatusKey" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDataDictionary">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDataDictionaryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataDictionaryResult" type="tns:MFWQuoteBookServiceDataDictionary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="MFWQuoteBookServiceDataDictionary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PickupLocationTypes" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryLocationTypes" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="PickupShipmentAccessorials" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryShipmentAccessorials" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="ShipmentAccessorials" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightAccessorials" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="HandlingUnitTypes" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="RecordTypes" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreightClasses" type="tns:DataDictionary" />
+          <s:element minOccurs="0" maxOccurs="1" name="Statuses" type="tns:DataDictionary" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataDictionary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Entries" type="tns:ArrayOfDictionaryEntry" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDictionaryEntry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DictionaryEntry" nillable="true" type="tns:DictionaryEntry" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DictionaryEntry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateQuoteIdentifiers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="bookingKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="shipmentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="vendorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="originPO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="destinationPO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="specialInstructions" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="extraBOLInfo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateQuoteIdentifiersResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="CloseShipmentCharges">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="connectionKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="bolList" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CloseShipmentChargesResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="Authenticate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="quoteServiceKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthenticateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthenticateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GenerateInternationalQuotesSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateInternationalQuotes" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInternationalQuotesSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateInternationalQuotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateQuotesSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateQuotes" />
+  </wsdl:message>
+  <wsdl:message name="GenerateQuotesSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateQuotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SimpleQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:SimpleQuote" />
+  </wsdl:message>
+  <wsdl:message name="SimpleQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:SimpleQuoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="BookShipmentFromQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:BookShipmentFromQuote" />
+  </wsdl:message>
+  <wsdl:message name="BookShipmentFromQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:BookShipmentFromQuoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="BookShipmentNoQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:BookShipmentNoQuote" />
+  </wsdl:message>
+  <wsdl:message name="BookShipmentNoQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:BookShipmentNoQuoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetShipmentStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetShipmentStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetShipmentStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetShipmentStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataDictionarySoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataDictionary" />
+  </wsdl:message>
+  <wsdl:message name="GetDataDictionarySoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataDictionaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateQuoteIdentifiersSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateQuoteIdentifiers" />
+  </wsdl:message>
+  <wsdl:message name="UpdateQuoteIdentifiersSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateQuoteIdentifiersResponse" />
+  </wsdl:message>
+  <wsdl:message name="CloseShipmentChargesSoapIn">
+    <wsdl:part name="parameters" element="tns:CloseShipmentCharges" />
+  </wsdl:message>
+  <wsdl:message name="CloseShipmentChargesSoapOut">
+    <wsdl:part name="parameters" element="tns:CloseShipmentChargesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateSoapIn">
+    <wsdl:part name="parameters" element="tns:Authenticate" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthenticateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MFWQuoteBookServiceSoap">
+    <wsdl:operation name="GenerateInternationalQuotes">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets international quotes</wsdl:documentation>
+      <wsdl:input message="tns:GenerateInternationalQuotesSoapIn" />
+      <wsdl:output message="tns:GenerateInternationalQuotesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateQuotes">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GenerateQuotesSoapIn" />
+      <wsdl:output message="tns:GenerateQuotesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SimpleQuote">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Quote one freight item with no accessorials. Returns quotes that cannot be used for a shipment.</wsdl:documentation>
+      <wsdl:input message="tns:SimpleQuoteSoapIn" />
+      <wsdl:output message="tns:SimpleQuoteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BookShipmentFromQuote">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Book a shipment from a quote using a key that was generated by the GenerateQuotes method</wsdl:documentation>
+      <wsdl:input message="tns:BookShipmentFromQuoteSoapIn" />
+      <wsdl:output message="tns:BookShipmentFromQuoteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BookShipmentNoQuote">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Book a shipment without a quote for volume and truckload shipments.</wsdl:documentation>
+      <wsdl:input message="tns:BookShipmentNoQuoteSoapIn" />
+      <wsdl:output message="tns:BookShipmentNoQuoteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetShipmentStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return the status of a shipment.</wsdl:documentation>
+      <wsdl:input message="tns:GetShipmentStatusSoapIn" />
+      <wsdl:output message="tns:GetShipmentStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataDictionary">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns data dictionary objects (descriptions / keys).</wsdl:documentation>
+      <wsdl:input message="tns:GetDataDictionarySoapIn" />
+      <wsdl:output message="tns:GetDataDictionarySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateQuoteIdentifiers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Updates client identifiers associated with a shipment.  Will fail if the associated shipment has been booked.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateQuoteIdentifiersSoapIn" />
+      <wsdl:output message="tns:UpdateQuoteIdentifiersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CloseShipmentCharges">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Closes an audited set of charges.</wsdl:documentation>
+      <wsdl:input message="tns:CloseShipmentChargesSoapIn" />
+      <wsdl:output message="tns:CloseShipmentChargesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Authenticate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Authenticates user and returns a connection key that must be used in many of the other methods.</wsdl:documentation>
+      <wsdl:input message="tns:AuthenticateSoapIn" />
+      <wsdl:output message="tns:AuthenticateSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MFWQuoteBookServiceSoap" type="tns:MFWQuoteBookServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GenerateInternationalQuotes">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GenerateInternationalQuotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateQuotes">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GenerateQuotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SimpleQuote">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/SimpleQuote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookShipmentFromQuote">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/BookShipmentFromQuote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookShipmentNoQuote">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/BookShipmentNoQuote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShipmentStatus">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GetShipmentStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataDictionary">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GetDataDictionary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateQuoteIdentifiers">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/UpdateQuoteIdentifiers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CloseShipmentCharges">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/CloseShipmentCharges" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Authenticate">
+      <soap:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/Authenticate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MFWQuoteBookServiceSoap12" type="tns:MFWQuoteBookServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GenerateInternationalQuotes">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GenerateInternationalQuotes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateQuotes">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GenerateQuotes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SimpleQuote">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/SimpleQuote" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookShipmentFromQuote">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/BookShipmentFromQuote" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookShipmentNoQuote">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/BookShipmentNoQuote" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShipmentStatus">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GetShipmentStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataDictionary">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/GetDataDictionary" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateQuoteIdentifiers">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/UpdateQuoteIdentifiers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CloseShipmentCharges">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/CloseShipmentCharges" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Authenticate">
+      <soap12:operation soapAction="http://webapi.myfreightworld.com/MFWQuoteBookService/1_3/Authenticate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MFWQuoteBookService">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">myFreightWorld Quote Book Service</wsdl:documentation>
+    <wsdl:port name="MFWQuoteBookServiceSoap" binding="tns:MFWQuoteBookServiceSoap">
+      <soap:address location="http://webapi.myfreightworld.com/mFWQuoteBookService/1_3/mFWQuoteBookService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MFWQuoteBookServiceSoap12" binding="tns:MFWQuoteBookServiceSoap12">
+      <soap12:address location="http://webapi.myfreightworld.com/mFWQuoteBookService/1_3/mFWQuoteBookService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

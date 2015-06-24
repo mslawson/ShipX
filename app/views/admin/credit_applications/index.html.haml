@@ -1,0 +1,33 @@
+.row{style: 'margin-top: 25px;'}
+  .col-md-2.col-md-offset-8
+    %select#credit_app_status
+      %option{value: -1} -- Show All --
+      %option{value: CreditApplication::STATUS_PENDING, selected: (@status == CreditApplication::STATUS_PENDING)} Pending
+      %option{value: CreditApplication::STATUS_APPROVED, selected: (@status == CreditApplication::STATUS_APPROVED)} Approved
+      %option{value: CreditApplication::STATUS_DENIED, selected: (@status == CreditApplication::STATUS_DENIED)} Denied
+
+.row
+  .col-md-8.col-md-offset-2
+    %table.table.table-striped
+      %caption Credit Applications
+      %thead
+        %tr
+          %th Name
+          %th Requested Limit
+          %th Approved Limit
+          %th Available LOC
+          %th Status
+          %th Actions
+      %tbody
+        - @credit_applications.each do |credit_application|
+          %tr
+            %td= credit_application.contact_name
+            %td= number_to_currency(credit_application.requested_credit_line)
+            %td= number_to_currency(credit_application.approved_credit_line)
+            %td= number_to_currency(credit_application.available_credit)
+            %td= credit_application_status(credit_application)
+            %td
+              = link_to "Show", admin_credit_application_path(credit_application)
+
+    .text-center
+      = will_paginate @credit_applications

@@ -1,0 +1,17 @@
+# these are only defaults
+# the real values will be read from ConfigurationItem DB table
+# if those are not present, we fall back to these settings
+
+development:
+  shipx_fee: 14.95        # for standard orders
+  addoncharge_fee: 14.95  # for addon charges
+  service_fee_fixed: 0.30 # $0.30
+  service_fee_pct: 0.029   # 3%
+  merchant: "acct_15v8Z1BGPLGnzq6x" # MFW Account ID
+
+production:
+  shipx_fee: 14.95        # for standard orders
+  addoncharge_fee: 14.95  # for addon charges
+  service_fee_fixed: 0.30 # $0.30
+  service_fee_pct: 0.029   # 3%
+  merchant: "acct_15ysb0DxLWiflgmU" # MFW's Account ID

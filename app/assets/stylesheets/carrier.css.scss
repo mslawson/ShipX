@@ -1,0 +1,287 @@
+/*
+ * This is a manifest file that'll be compiled into carrier.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require jquery-ui
+ *= require jquery.datetimepicker
+ */
+@import "bootstrap";
+@import "bootstrap/theme";
+
+body {
+  background: #ffffff;
+  color: #444444;
+}
+
+a, a:hover, a:active, a:focus {
+  text-decoration: none;
+  color: #444444;
+}
+
+a:hover {
+  color: #000000;
+}
+
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 250px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  background: rgb(41, 53, 65);
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+
+  .top-panel {
+    padding: 15px 30px;
+  }
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+}
+
+.top-panel {
+  height: 64px;
+  width: 100%;
+  background: #f0f0f0;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  text-indent: 10px;
+  line-height: 40px;
+}
+
+.sidebar-nav li a {
+  font-weight: normal;
+  display: block;
+  text-decoration: none;
+  color: #999999;
+  border-bottom: 1px solid #36434C;
+  padding: 10px 0;
+}
+
+.sidebar-nav li a:hover {
+  font-weight: normal;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav li a span.glyphicon {
+  margin-right: 10px;
+}
+
+a.sidebar-brand {
+  display: block;
+  height: 100%;
+}
+
+a.sidebar-brand {
+  background: #ff6c00;
+  padding: 10px;
+}
+
+a.sidebar-brand img {
+  margin: auto;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+@media(min-width: 768px) {
+  #wrapper {
+    padding-left: 250px;
+  }
+
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: 250px;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+
+  #page-content-wrapper {
+    position: relative;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.page-title {
+  font-size: 24px;
+}
+
+.page-link {
+  cursor: pointer;
+}
+
+#page-container {
+  margin-top: 30px;
+}
+
+.page-watermark {
+  font-size: 32px;
+  text-align: center;
+  color: #999999;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.table-action {
+  margin-left: 10px;
+}
+
+.page-actions {
+  margin-right: 20px;
+}
+
+a.page-action {
+  margin-right: 10px;
+}
+
+.html-template {
+  display: none;
+}
+
+.label a {
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.label a:hover {
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.label-region-entity {
+  font-size: 100%;
+  margin-right: 10px;
+}
+
+.region-entity-delete-action {
+  margin-left: 5px;
+  color: #cccccc;
+}
+
+.region-entity-delete-action:hover {
+  color: #b92c28;
+  font-weight: normal;
+}
+
+.details-row {
+  background: #F9F2E7;
+}
+
+.table-details {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.lane-schedule-pricing-action {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.active-pricing-tile {
+  -moz-box-shadow: 0 0 5px #888;
+  -webkit-box-shadow: 0 0 5px #888;
+  box-shadow: 0 0 5px #888;
+  margin-top: 20px;
+  padding: 10px;
+  background: #F9F2E7;
+  position: relative;
+  cursor: pointer;
+}
+
+.active-pricing-display-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.active-pricing-details {
+  font-size: 20px;
+}
+
+.active-pricing-discount, .active-pricing-minimum-charge, .active-pricing-end-date {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.active-price-disable-action {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.row-title {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.highlight {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,80 @@
+.navbar
+  .container
+    .col-md-12.navbar-collapse.collapse
+      %ul.nav.navbar-nav
+        %li
+          = link_to "Admin Home", admin_shipments_path
+        %li
+          = link_to "Credit Applications", credit_applications_path
+        %li
+          = link_to "System Configuration", admin_configuration_items_path
+
+
+.row{style: 'margin-top: 25px;'}
+  .col-md-6.col-md-offset-1
+    .panel.panel-primary
+      .panel-heading Shipment Statistics
+      .panel-body
+        %table.table.table-striped
+          %caption Shipment Summary Aging
+          %thead
+            %tr
+              %th
+              %th 0-30
+              %th 31-60
+              %th 61-90
+              %th 90+
+          %tbody
+            %tr
+              %td Booked (count)
+              %td= @booked_count['0-30']
+              %td= @booked_count['31-60']
+              %td= @booked_count['61-90']
+              %td= @booked_count['90+']
+            %tr
+              %td Booked (amount)
+              %td= number_to_currency(@booked_amount['0-30'])
+              %td= number_to_currency(@booked_amount['31-60'])
+              %td= number_to_currency(@booked_amount['61-90'])
+              %td= number_to_currency(@booked_amount['90+'])
+
+  .col-md-3.col-md-offset-1
+    .panel.panel-info
+      .panel-heading Pending Credit Applications
+      .panel-body
+        - if @credit_apps.pending.count > 0
+          %table.table.table-striped
+            %thead
+              %tr
+                %th Name
+                %th Requested
+            %tbody
+              - @credit_apps.pending.each do |credit_app|
+                %tr
+                  %td= link_to credit_app.contact_name, admin_credit_application_path(credit_app)
+                  %td= number_to_currency(credit_app.requested_credit_line)
+        - else
+          %center
+            %small
+              No Pending Credit Apps
+
+        %center
+          %small
+            = link_to "See All", admin_credit_applications_path
+
+.row{style: 'margin-top: 25px;'}
+  .col-md-8.col-md-offset-2
+    .panel.panel-primary
+      .panel-heading Open Shipments
+      .panel-body
+        %table.table.table-striped
+          %caption Open Shipment (Booked, Not Delievered)
+          %tbody
+            - @shipments.each do |shipment|
+              %tr
+                %td= link_to "Shipment #{shipment.id}", admin_shipment_path(shipment)
+                %td Booked
+                %td= shipment.total_price
+          %tfoot
+            %tr
+              %td{colspan:3}= will_paginate @shipments

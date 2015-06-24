@@ -1,0 +1,923 @@
+$clr-orange: #ff6c00
+$clr-darkorange: #7d2c00
+$clr-subtledarkorange: #ea6300
+$clr-lightorange: #ff9a4f
+$clr-red: #e00808
+$clr-lightred: #e04b4b
+$clr: #fff
+$clr-grey: #888785
+$clr-darkgrey: #626160
+$clr-lightgrey: #d4d2cd
+$clr-verylightgrey: #eeeee5
+$clr-offwhite: #fafafa
+$clr-black: #424242
+$clr-blue: #0099e0
+$clr-darkblue: #0081bd
+$clr-lightblue: #cff0ff
+$clr-panel: #fbfbfb
+$clr-default: #d2cfca
+
+$radius-circle: 34px
+
+@mixin mix-shadow($distance: 1px, $radius: 3px, $color: rgba(0, 0, 0, 0.3))
+  box-shadow: 0px $distance $radius $color
+  -webkit-box-shadow: 0px $distance $radius $color
+  -moz-box-shadow: 0px $distance $radius $color
+  -khtml-box-shadow: 0px $distance $radius $color
+  -o-box-shadow: 0px $distance $radius $color
+  -icab-box-shadow: 0px $distance $radius $color
+
+@mixin mix-no-shadow
+  box-shadow: none
+  -webkit-box-shadow: noneor
+  -moz-box-shadow: none
+  -khtml-box-shadow: none
+  -o-box-shadow: none
+  -icab-box-shadow: none
+
+@mixin mix-rounded($topleft: 10px, $topright: 10px, $bottomright: 10px, $bottomleft: 10px)
+  border-radius: $topleft $topright $bottomright $bottomleft
+  -moz-border-radius: $topleft $topright $bottomright $bottomleft
+  -webkit-border-radius: $topleft $topright $bottomright $bottomleft
+  -o-border-radius: $topleft $topright $bottomright $bottomleft
+  -icab-border-radius: $topleft $topright $bottomright $bottomleft
+  -khtml-border-radius: $topleft $topright $bottomright $bottomleft
+
+@mixin font-open-sans($style: "normal", $size: 1em)
+  font-size: $size
+  font-family: "open-sans"
+
+  @if $style == "extra light"
+    font-weight: 300
+    font-style: normal
+    -webkit-font-smoothing: antialiased
+    -webkit-text-stroke-width: 0px
+
+  @else if $style == "light"
+    font-weight: 300
+    font-style: normal
+    -webkit-font-smoothing: subpixel-antialiased
+
+  @else if $style == "normal"
+    font-weight: 400
+    font-style: normal
+  @else if $style == "italic"
+    font-weight: 400
+    font-style: italic
+  @else if $style == "bold"
+    font-weight: 700
+    font-style: normal
+  @else if $style == "extrabold"
+    font-weight: 800
+    font-style: normal
+  @else
+    font-weight: 400
+    font-style: normal
+
+@mixin clean-fonts
+  -webkit-text-shadow: rgba(255,255,255,0.01) 0 0 1px
+  -webkit-text-stroke-width: 0.1px
+  text-rendering: optimizeLegibility
+  font-feature-settings: "kern"
+  -webkit-font-feature-settings: "kern"
+  -moz-font-feature-settings: "kern"
+  -moz-font-feature-settings: "kern=1"
+
+
+@mixin clearfix()
+  *zoom: 1
+  &:before, &:after
+    content: " "
+    display: table
+  &:after
+    clear: both
+
+html
+  -webkit-font-smoothing: antialiased
+
+body
+  background: #fff
+
+\::-webkit-input-placeholder
+  color: $clr-lightgrey
+
+\:-moz-placeholder
+  color: $clr-lightgrey
+
+\::-moz-placeholder
+  color: $clr-lightgrey
+
+\:-ms-input-placeholder 
+  color: $clr-lightgrey
+
+
+h1
+  @include font-open-sans("light", 2.2em)
+  color: $clr-orange
+  margin-bottom: 20px
+  @include clean-fonts
+
+h4
+  @include font-open-sans("light", 1.3em)
+  margin-top: 2px
+  margin-bottom: 15px
+  color: $clr-grey
+
+h4.subtitle
+  @include font-open-sans("bold", 0.9em)
+  margin-top: 4px
+  margin-bottom: 5px
+  color: $clr-grey
+  text-transform: uppercase
+
+  a
+    font-size: 0.9em
+    font-weight: normal
+    text-transform: none
+
+h5
+  @include font-open-sans("normal", 1.1em)
+  margin-top: 5px
+  margin-bottom: 7px
+  color: $clr-orange
+
+
+dt
+  @include font-open-sans("light", 0.9em)
+  color: $clr-grey
+
+dd
+  @include font-open-sans("bold", 1.1em)
+  line-height: 125%
+  color: $clr-black
+
+.center
+  margin: 0px auto
+  padding-top: 15px
+  text-align: center
+
+.offset-15
+  padding-left: 15px
+  
+
+.segment-control
+  max-width: 800px
+  @include clearfix()
+  margin-top: 20px
+  margin-bottom: 30px
+
+  a.segment
+    float: left
+    margin: 0px auto
+    position: relative
+    text-decoration: none
+
+    p
+      text-align: center
+      @include font-open-sans("extrabold", 0.9em)
+      text-transform: uppercase
+      color: $clr-lightgrey
+
+    .label
+      display: block
+      clear: both
+      background: $clr-lightgrey
+      padding: 10px
+      @include mix-rounded($radius-circle, $radius-circle, $radius-circle, $radius-circle)
+      width: $radius-circle
+      height: $radius-circle
+      margin: 0px auto
+      @include font-open-sans("extrabold", 1em)
+      line-height: 100%
+      z-index: 2
+
+    .label:before
+      content: " "
+      position: absolute
+      top: 45px
+      left: 0px
+      width: 35%
+      border-bottom: 1px solid $clr-lightgrey
+      z-index: 1
+
+    .label:after
+      content: " "
+      position: absolute
+      top: 45px
+      right: 0px
+      width: 35%
+      border-bottom: 1px solid $clr-lightgrey
+      z-index: 1
+
+  a.segment.active
+    p
+      color: $clr-orange
+    .label
+      background: $clr-orange
+
+  a.segment.complete
+    p
+      color: $clr-blue
+    .label
+      background: $clr-blue url(image-path("check_med.png")) no-repeat 50% 50%
+
+  a.segment:first-child
+    margin-left: -25px
+
+    .label:before
+      display: none
+
+  a.segment:last-child
+
+    .label:after
+      display: none
+
+  a.segment:hover
+    text-decoration: none
+
+
+.segments-5
+  a.segment
+    width: 20%
+
+.pad-0
+  padding-right: 0px !important
+  padding-left: 0px !important
+
+.pad-10
+  padding-right: 10px !important
+  padding-left: 10px !important
+
+.pad-15
+  padding-right: 15px !important
+  padding-left: 15px !important
+
+.pad-20
+  padding-right: 20px !important
+  padding-left: 20px !important
+
+.pad-30
+  padding-right: 30px !important
+  padding-left: 30px !important
+
+.m-right-5
+  margin-right: 5px !important
+
+.extend-30
+  padding-bottom: 30px
+
+.push-5
+  padding-top: 5px
+
+
+.panel-default
+  background: $clr-panel
+  border: 1px solid #eee
+
+  .panel-summary
+    background: none
+    background-image: none
+    border-bottom: 0px
+    padding: 15px
+
+    p
+      padding: 0px
+      margin: 0px
+      color: $clr-black
+      @include font-open-sans("normal", 0.9em)
+
+.panel-white
+  background: $clr
+  border: 1px solid #ddd
+
+  .panel-heading
+    background: none
+    background-image: none
+
+.panel-default
+
+  .panel-heading
+    background: none
+    background-image: none
+
+.panel-body
+  p
+    margin: 0px 0px 6px 0px
+    @include font-open-sans("normal", 0.9em)
+
+  p:last-child
+    margin-bottom: 0px
+
+h3.panel-title
+  @include font-open-sans("bold", 0.9em)
+  color: $clr-grey
+  text-transform: uppercase
+
+h4.panel-title
+  @include font-open-sans("normal", 1em)
+  color: $clr-orange
+
+  a
+    span.glyphicon
+      font-size: .8em
+      line-height: 90%
+
+.container 
+  .jumbotron
+    @include mix-rounded(0px, 0px, 0px, 0px)
+
+table.table-bordered
+  @include mix-rounded(2px, 2px, 2px, 2px)
+
+  thead
+    tr
+      th
+        border-bottom: 1px solid #ddd
+
+    tr:first-child
+      th:first-child
+        @include mix-rounded(2px, 0px, 0px, 0px)
+      th:last-child
+        @include mix-rounded(0px, 2px, 0px, 0px)
+
+table
+  td.actions
+    padding-top: 3px !important
+    padding-bottom: 0px !important
+    @include clearfix
+    text-align: right
+
+    .btn
+      margin-right: 2px
+
+    .btn:last-child
+      margin-right: 0px
+
+  tr.active
+
+    td
+      background-color: $clr-lightgrey !important
+      color: $clr-black
+
+table.table-white
+  background: $clr !important
+
+.checkbox
+  margin-top: 0px
+  margin-bottom: 0px
+
+.navbar
+  background: $clr-offwhite
+  border-bottom: none
+  @include mix-shadow(1px, 1px, rgba(0,0,0, 0.1))
+
+  .container
+    width: 100%
+
+  .navbar-collapse
+    background: none
+    border-bottom: none
+
+  a.navbar-brand
+
+    img
+      display: block
+      margin: -7px 0px 0px -11px
+
+.main-container
+  background: $clr
+  width: 100%
+  padding: 0px
+  margin-top: 60px
+
+  .account
+    margin-left: 40px
+    margin-top: 80px
+
+  .with-sidebar
+    margin-left: 280px
+
+  .sidebar
+    background: $clr-orange
+    padding-top: 87px
+    position: fixed
+    top: 0px
+    left: 0px
+    bottom: 0px
+    width: 280px
+
+    hr
+      margin-left: -20px
+      margin-right: -20px
+      background: $clr
+
+    table.mini
+      margin-bottom: 20px
+
+      td.narrow
+        width: 15%
+
+      td
+        @include font-open-sans("normal", 0.9em)
+        color: $clr
+        vertical-align: top
+        padding: 2px 0px
+        line-height: 120%
+
+        span.label
+          font-weight: normal
+          padding: 0px
+          line-height: 100%
+
+    p
+      color: $clr
+      @include font-open-sans("normal", 0.9em)
+      @include clean-fonts
+      margin-bottom: 10px
+
+      
+    h2
+      color: $clr
+      text-transform: uppercase
+      @include font-open-sans("extrabold", 0.9em)
+      @include clean-fonts
+
+    h3
+      color: $clr-darkorange
+      @include font-open-sans("bold", 0.9em)
+      @include clean-fonts
+      margin-bottom: 3px
+
+    ul.checked
+      padding: 0px 0px 10px 0px
+      li
+        list-style: none
+        background: url(image-path("check_sm.png")) no-repeat 0px 2px
+        padding-left: 17px
+        color: $clr
+        @include font-open-sans("normal", 0.8em)
+        @include clean-fonts
+
+
+    .actions
+      margin: 20px 0px
+
+.main-container:first-child
+  margin-top: 0px
+
+.main-container#home
+
+  .menu
+    background-color: $clr-orange
+    min-height: 59px
+    @include clearfix
+
+    ul
+      @include clearfix
+      margin: 0px
+      padding: 0px
+
+      li
+        list-style: none
+        float: left
+        width: 25%
+        text-align: center
+        margin: 0px
+        padding: 0px
+
+        a, a:link, a:visited, a:hover, a:active
+          display: block
+          text-align:center
+          padding-top: 20px
+          padding-bottom: 20px
+          color: #fff
+          @include font-open-sans("bold", 1em)
+          cursor: pointer
+
+        a:hover
+          background-color: $clr-subtledarkorange
+          text-decoration: none
+
+
+  .jumbotron
+    @include mix-rounded(0px, 0px, 0px, 0px)
+    margin-bottom: 0px
+    @include clearfix
+
+    p.quote
+      font-size: 1.1em
+      color: $clr-darkgrey
+      position: relative
+      line-height: 160%
+
+    p.quote:before
+      content: "“"
+      position: absolute
+      top: 3px
+      left: -18px
+      font-size: 2.4em
+      font-weight: light
+      color: $clr-lightgrey
+
+    p.content
+      font-size: 1.1em
+
+    img.splash-pic-1
+      display: block
+      margin-top: -48px
+
+    img.splash-pic-2
+      display: block
+      margin-top: -80px
+
+  .splash
+    background-image: url(image-path("splash-header.jpg"))
+    background-repeat:no-repeat
+    background-position: 50% 0
+    background-size: cover
+    height: 540px 
+
+    h1
+      text-align: center
+
+  .splash-header
+    p.inline-right
+      float: right
+      text-align: right
+      margin-right: 10px
+      margin-top: 5px
+      @include font-open-sans("bold", 0.9em)
+
+    .btn-splash
+      float: right
+
+    img.logo
+      float: left
+
+    p.tagline
+      font-size: 1.2em
+      margin-top: 10px
+      padding-left: 20px
+      float: left
+
+  .cars
+    background-image: url(image-path("splash-cars.jpg"))
+    background-repeat:no-repeat
+    background-position: 50% 0
+    background-size: cover
+    height: 460px
+    padding-top: 80px
+
+  h1
+    padding-top: 60px
+    @include font-open-sans("extra light", 3.4em)
+
+  h2
+    padding-top: 0px
+    padding-bottom: 15px
+    @include font-open-sans("extra light", 2.4em)
+
+  h3
+    @include font-open-sans("italic", 1.4em)
+    text-align: right
+    padding-right: 30px
+    position: relative
+    float: right
+    max-width: 80%
+
+  h3:after
+    content: "”"
+    position: absolute
+    top: -5px
+    right: 12px
+    font-size: 2.4em
+    font-family: "helvetica"
+    font-weight: light
+    color: $clr-lightgrey
+
+  h3:after
+
+
+  p.center
+    margin: 0px auto
+    padding-top: 30px
+    text-align: center
+
+  p.between-sections
+    margin-bottom: -82px
+    margin-top: 0px
+
+  .over-dark
+    h1
+      color: #fff
+
+    h2
+      color: #fff
+
+    p
+      color: #fff
+
+    p.quote
+      color: #fff
+
+    p.quote:before
+      color: $clr-lightgrey
+
+    h3
+      color: $clr-orange
+
+    h3:after
+      color: $clr-orange
+
+  .over-light
+    background: #fff
+
+    h2
+      color: $clr-orange
+
+
+
+ul.checked
+  padding: 0px 0px 10px 0px
+  li
+    list-style: none
+    background: url(image-path("check_med_dark.png")) no-repeat 0px 1px
+    padding-left: 25px
+    color: $clr-black
+    @include font-open-sans("normal", 0.9em)
+    @include clean-fonts
+
+// Buttons
+
+.btn
+  background: $clr
+  @include mix-rounded(2px, 2px, 2px, 2px)
+  @include mix-shadow(1px, 1px, rgba(0,0,0,0.3))
+  border: none
+  text-shadow: none
+  @include font-open-sans("normal", 1em)
+  color: $clr-black
+  @include clean-fonts
+  margin: 0px 5px 0px 0px
+
+.btn:last-child
+  margin-right: 0px
+
+.btn-default
+  background: $clr-lightgrey
+  @include mix-no-shadow
+  color: $clr-black
+  border: 1px solid $clr-lightgrey
+
+.btn-default:hover
+  color: $clr-black
+  background: $clr-verylightgrey
+  border: 1px solid $clr-verylightgrey
+
+.btn-info
+  color: $clr-black
+  background: $clr-offwhite
+  @include mix-no-shadow
+  border: 1px solid $clr-lightgrey
+
+.btn-info:hover
+  color: $clr-black
+  background: $clr-verylightgrey
+  border: 1px solid $clr-lightgrey
+
+.btn-primary
+  color: $clr
+  background: $clr-orange
+  @include mix-no-shadow
+  border: 1px solid $clr-orange
+
+.btn-primary:hover
+  color: $clr
+  background: $clr-lightorange
+  border: 1px solid $clr-lightorange
+
+.btn-primary[disabled]
+  background: $clr-lightgrey
+  @include mix-no-shadow
+  color: $clr-grey
+  border: 1px solid $clr-lightgrey
+
+.btn-warning
+  color: $clr
+  background: $clr-red
+  @include mix-no-shadow
+  border: 1px solid $clr-red
+
+.btn-warning:hover
+  color: $clr
+  background: $clr-lightred
+  border: 1px solid $clr-lightred
+
+.btn-white
+  color: $clr-blue
+  background: $clr
+  border: 1px solid $clr
+
+.btn-white:hover
+  color: $clr-black
+  background: #eee
+  border: 1px solid #eee
+
+.btn-link
+  color: $clr-orange
+  background: none
+  @include mix-no-shadow
+  border: none
+  text-decoration: none
+
+.btn-link:hover
+  color: $clr-darkorange
+  background: none
+  @include mix-no-shadow
+  border: none
+  text-decoration: none
+
+.btn.btn-splash
+  color: $clr-orange !important
+  font-family: "open-sans"
+  font-weight: bold
+
+  a, a:active, a:visited, a:hover
+    color: $clr-orange !important
+    text-decoration: none
+
+.btn
+  font-size: 1em
+  @include mix-rounded(3px, 3px, 3px, 3px)
+
+.btn-lg
+  font-size: 1.3em
+  @include mix-rounded(4px, 4px, 4px, 4px)
+  @include clean-fonts
+
+.btn-lg-sm-text
+  @include mix-rounded(4px, 4px, 4px, 4px)
+  @include clean-fonts
+  padding: 20px 40px
+  font-size: 0.8em
+  font-weight: normal !important
+  letter-spacing: 2px
+
+.btn-sm
+  font-size: 0.8em
+  @include mix-rounded(2px, 2px, 2px, 2px)
+
+.btn-xs
+  font-size: 0.7em
+  @include mix-rounded(2px, 2px, 2px, 2px)
+
+.btn-round
+  @include mix-rounded(50px, 50px, 50px, 50px)
+  padding: 2px 4px
+  font-size: 0.8em
+
+.ui-widget
+  font-family: "open-sans"
+
+.ui-datepicker-header
+  background: $clr-verylightgrey
+  border: 1px solid $clr-lightgrey
+
+.ui-datepicker
+  @include mix-shadow(1px, 2px, rgba(0,0,0,0.1))
+  border: 1px solid $clr-lightgrey
+
+  a.ui-state-default
+    background: none
+    background-image: none
+    text-align: center
+    border: 1px solid #eee
+
+  a.ui-state-default:hover
+    background: none
+    background-image: none
+    text-align: center
+    border: 1px solid $clr-orange
+
+  a.ui-state-highlight
+    background: $clr-verylightgrey
+
+  a.ui-state-active
+    background: $clr-lightorange
+
+.alert
+  padding: 5px 8px
+  font-size: 0.9em
+
+.alert-success
+  background: $clr-lightblue
+  border: 1px solid $clr-blue
+  color: $clr-blue
+
+.alert-info
+  background: $clr-verylightgrey
+  border: 1px solid $clr-lightgrey
+  color: $clr-grey
+
+.alert-warning
+  background: $clr-orange
+  border: 1px solid $clr-orange
+  color: $clr
+
+.alert-danger
+  background: $clr-red
+  border: 1px solid $clr-red
+  color: $clr
+
+.progress-bar
+  background: $clr-lightgrey
+
+.progress-bar-success
+  background: $clr-lightorange
+
+.progress-bar-warning
+  background: $clr-red
+
+
+li.list-group-item
+  padding: 6px 9px
+  @include font-open-sans("normal", 0.9em)
+  @include clean-fonts
+
+  p.list-group-item-text
+    font-size: .9em
+
+li.list-group-item:first-child
+  @include mix-rounded(3px, 3px, 0px, 0px)
+
+li.list-group-item:last-child
+  @include mix-rounded(0px, 0px, 3px, 3px)
+
+a.list-group-item
+  padding: 6px 9px
+  @include font-open-sans("normal", 0.9em)
+  @include clean-fonts
+
+  p.list-group-item-text
+    font-size: .9em
+
+a.list-group-item:first-child
+  @include mix-rounded(3px, 3px, 0px, 0px)
+
+a.list-group-item:last-child
+  @include mix-rounded(0px, 0px, 3px, 3px)
+
+a.list-group-item.active
+  background: $clr-blue
+  color: $clr
+  text-shadow: none
+
+a.list-group-item:hover
+  background: $clr-verylightgrey
+
+a.list-group-item.active:hover
+  background: $clr-darkblue
+  color: $clr
+  text-shadow: none
+
+li.list-group-item h4, a.list-group-item h4
+  @include font-open-sans("normal", 1.2em)
+  @include clean-fonts
+  padding-bottom: 4px
+
+.panel
+  .well
+    background: #fff
+    padding: 6px 9px
+    margin-bottom: 5px
+    @include mix-rounded(2px, 2px, 2px, 2px)
+
+.well
+  background: $clr-verylightgrey
+
+  p
+    margin: 0px 0px 6px 0px
+    @include font-open-sans("normal", 0.9em)
+
+  p:last-child
+    margin-bottom: 0px
+
+.row.line-item-header
+  padding-bottom: 10px
+  @include font-open-sans("normal", .8em)
+  color: $clr-grey
+
+.row.line-item
+  border-top: 1px solid $clr-lightgrey
+  padding-top: 15px
+
+.form-control
+  height: 30px
+  padding: 2px 8px
+
+.input-group
+  
+  .input-group-addon
+    padding: 0px
+    padding-left: 10px
+    padding-right: 10px

@@ -1,0 +1,11 @@
+development:
+  aws_key: AKIAIXD7J4IBKK5VMIUA
+  aws_secret: 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
+
+test:
+  aws_key: AKIAIXD7J4IBKK5VMIUA
+  aws_secret: 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
+
+production:
+  aws_key: AKIAIXD7J4IBKK5VMIUA
+  aws_secret: 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

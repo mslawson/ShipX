@@ -1,0 +1,10 @@
+.segment-control.segments-5
+  - visible_step = 0
+  - @steps.each_with_index do |step, i|
+    - unless step.downcase == "quoting" || step.downcase == "complete" || step.downcase == "booking"
+      - visible_step += 1
+      %a.segment{class: if step == @step_name then "active" elsif i < @step_index then "complete" end, href: if i >= @step_index then "#" else edit_shipment_shipment_part_path(@shipment, step) end}
+        %p= step_name(step)
+        .label
+          - if i >= @step_index
+            = (visible_step).to_s

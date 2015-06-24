@@ -1,0 +1,182 @@
+#shipment_parts-freight
+  = form_for @shipment, :url => shipment_shipment_part_path(@shipment, params[:id]), :as => :shipment do |f|
+    
+    = render partial: 'shipment_sidebar', locals: {temp: 'freight', shipment: @shipment}
+
+    .col-md-9.pad-30.extend-30.with-sidebar
+      = render 'progress'
+      %h1 Freight
+
+      .col-md-12.pad-0
+        .panel.panel-default
+          .panel-body
+            .alert.alert-info
+              %b The dimensions, weight and accessorials you provide will be used to calculate an exact quote.  Any variation in the actual shipment will result in additional charges.
+            - if @shipment.errors.count > 0
+              .alert.alert-danger
+                %b Error:
+                = @shipment.errors.to_a.join(", ")
+
+            - if @shipment.in_error_state?
+              .alert.alert-danger
+                %b Your last quote attempt returned an error:
+                = @shipment.error_message
+                Please try again.
+
+            .row.line-item-header{:style => "font-size: 0.8em"}
+              .col-md-1
+                Item #
+              .col-md-1
+                Quantity
+              .col-md-2
+                Weight
+              .col-md-3
+                Class & Dimensions
+              .col-md-2
+                Type / Est. Value
+              .col-md-2
+                Extras
+              .col-md-1
+
+            .line-items
+
+              - @shipment.freight_items.each do |freight_item|
+                .row.line-item
+                  %input.form-control{type: 'hidden', 'data-field' => 'id', value: freight_item.id}
+                  .col-md-1.numbered-col
+                  .col-md-1
+                    %input.form-control{value: freight_item.quantity, 'data-field' => 'quantity'}
+                  .col-md-2
+                    .input-group
+                      %input.form-control{'data-field' => 'weight', value: freight_item.weight}
+                      %span.input-group-addon
+                        %input{'data-field' => 'weight_unit', value: "LB", type: 'hidden'}
+                        LB
+                  .col-md-2
+                    %select.form-control.freight-class{'data-field' => 'freight_class_code', 'data-toggle' => 'tooltip', 'title' => '', 'data-trigger' => "manual"}
+                      %option{value: 0} I Don't Know
+                      - Dictionary.where(:code => 'freight_classes').first.dictionary_entries.each do |de|
+                        %option{value: de.key, selected: freight_item.freight_class_code == de.key}= de.key
+                    %br
+                    .input-group
+                      %input.form-control.dim{'data-field' => 'dim_length', :placeholder => "Length", value: freight_item.dim_length}
+                      %input.form-control.dim{'data-field' => 'dim_width', :placeholder => "Width", value: freight_item.dim_width}
+                      %input.form-control.dim{'data-field' => 'dim_height', :placeholder => "Height", value: freight_item.dim_height}
+                      %span.input-group-addon
+                        in
+                  .col-md-3
+                    %select.form-control.freight-type{'data-field' => 'freight_type'}
+                      - Dictionary.where(:code => 'handling_unit_types').first.dictionary_entries.each do |de|
+                        %option{value: de.key, selected: freight_item.freight_type == de.key}= de.name
+                    %br
+                    .input-group
+                      %input.form-control{'data-field' => 'estimated_value', :placeholder => "Est Value", value: freight_item.estimated_value}
+                      %span.input-group-addon
+                        USD
+                    %br
+                    .input-group.piece-count-group{:style => if freight_item.requires_piece_count? then '' else 'display:none;' end}
+                      %input.form-control{'data-field' => 'piece_count', :placeholder => "Pieces", value: freight_item.piece_count}
+                      %span.input-group-addon
+                        Pieces
+                  .col-md-2
+                    %small
+                      %input{type: 'hidden', 'data-field' => 'accessorials[]'}
+                      %input{type: 'checkbox', checked: freight_item.accessorials_obj.include?("HAZARDOUSX"), value: 'HAZARDOUSX', 'data-field' => 'accessorials[]', style: 'margin-top: 10px;'} &nbsp; Hazardous?
+                      %br
+                      %input{type: 'checkbox', checked: freight_item.accessorials_obj.include?("FREEZEPROT"), value: 'FREEZEPROT', 'data-field' => 'accessorials[]', style: 'margin-top: 10px;'} &nbsp; Freeze Protect?
+                      %br
+                      %input{type: 'checkbox', checked: freight_item.accessorials_obj.include?("SORTSEGREG"), value: 'SORTSEGREG', 'data-field' => 'accessorials[]', style: 'margin-top: 10px;'} &nbsp; Sort / Segregate?
+                  .col-md-1
+                    %a.btn.btn-warning.btn-round.remove-freight
+                      %span.glyphicon.glyphicon-remove
+
+            .row.line-item.line-item-template{style: 'display:none;'}
+              .col-md-1.numbered-col
+              .col-md-1
+                %input.form-control{value: 1, 'data-field' => 'quantity'}
+              .col-md-2
+                .input-group
+                  %input.form-control{'data-field' => 'weight'}
+                  %span.input-group-addon
+                    %input{'data-field' => 'weight_unit', value: "LB", type: 'hidden'}
+                    LB
+              .col-md-2
+                %select.form-control.freight-class{'data-field' => 'freight_class_code', 'data-toggle' => 'tooltip', 'title' => '', 'data-container' => 'body', 'data-placement' => 'top', 'data-trigger' => "manual"}
+                  - Dictionary.where(:code => 'freight_classes').first.dictionary_entries.each do |de|
+                    %option{value: de.key}= de.key
+                %br
+                .input-group
+                  %input.form-control.dim{'data-field' => 'dim_length', :placeholder => "Length"}
+                  %input.form-control.dim{'data-field' => 'dim_width', :placeholder => "Width"}
+                  %input.form-control.dim{'data-field' => 'dim_height', :placeholder => "Height"}
+                  %span.input-group-addon
+                    in
+              .col-md-3
+                %select.form-control.freight-type{'data-field' => 'freight_type'}
+                  - Dictionary.where(:code => 'handling_unit_types').first.dictionary_entries.each do |de|
+                    %option{value: de.key}= de.name
+                %br
+                .input-group
+                  %input.form-control{'data-field' => 'estimated_value', :placeholder => "Est Value (if known)"}
+                  %span.input-group-addon
+                    USD
+                %br
+                .input-group.piece-count-group{:style => 'display:none;'}
+                  %input.form-control{'data-field' => 'piece_count', :placeholder => "Pieces", value: 1}
+                  %span.input-group-addon
+                    Pieces
+
+              .col-md-2
+                %small
+                  %input{type: 'checkbox', style: 'margin-top: 10px;', 'data-field' => 'accessorials[]', value: 'HAZARDOUSX'} &nbsp; Hazardous?
+                  %br
+                  %input{type: 'checkbox', style: 'margin-top: 10px;', 'data-field' => 'accessorials[]', value: 'FREEZEPROT'} &nbsp; Freeze Protect?
+                  %br
+                  %input{type: 'checkbox', style: 'margin-top: 10px;', 'data-field' => 'accessorials[]', value: 'SORTSEGREG'} &nbsp; Sort / Segregate?
+                  %br
+              .col-md-1
+                %a.btn.btn-warning.btn-round.remove-freight
+                  %span.glyphicon.glyphicon-remove
+
+            %br
+
+            %a.btn.btn-primary.btn-sm{id: 'add-freight'}
+              Add More Items
+
+            %br
+            %br
+
+            .panel-group{id: "accordion_freight"}
+              .panel.panel-white
+                .panel-heading
+                  %h4.panel-title
+                    %a{'data-toggle' => 'collapse', 'data-parent' => "#accordion_freight", 'href' => "#collapse_freight"}
+                      %icon.glyphicon.glyphicon-plus
+                      Freight Accessorials
+                .panel-collapse.collapse.in{id: "collapse_freight"}
+                  .panel-body
+                    .row
+                      .col-md-4
+                        .form-group
+                          = hidden_field_tag "shipment[accessorials][]", nil
+                          - Dictionary.for_code('pickup_shipment_accessorials').each do |acc|
+                            .checkbox
+                              %label
+                                %input{type: 'checkbox', name: "shipment[accessorials][]", value: acc.key, checked: (@shipment.accessorials && @shipment.accessorials.include?(acc.key))}= acc.name
+                      .col-md-4
+                        .form-group
+                          = hidden_field_tag "shipment[accessorials][]", nil
+                          - Dictionary.for_code('delivery_shipment_accessorials').each do |acc|
+                            .checkbox
+                              %label
+                                %input{type: 'checkbox', name: "shipment[accessorials][]", value: acc.key, checked: (@shipment.accessorials && @shipment.accessorials.include?(acc.key))}= acc.name
+                      .col-md-4
+                        %p 
+                          Have a complex shipment?
+                          %br  
+                          Click here:
+                          %a{:href => "mailto:support@myfreightworld.com", :style => "color:#ff6c00"}MyFreightWorld
+
+
+
+        %button.btn.btn-primary.btn-lg{:name => 'commit', :value => "continue"} Continue

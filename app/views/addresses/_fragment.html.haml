@@ -1,0 +1,99 @@
+- address ||= Address.new
+.address-fragment
+  - unless address.new_record?
+    %input{type: 'hidden', name: "#{fragment_name}[id]", value: address.id}
+  .free-entry-field{:style => unless address.new_record? && address.contact_name.nil? && !(address.errors.count > 0) then 'display:none;' end}
+    .row
+      .col-md-12
+        .form-group
+          %input.form-control.address-free-entry{:style => "width:100%"}
+
+  .input-fields{:style => if address.new_record? && address.contact_name.nil? && !(address.errors.count > 0) then 'display:none;' end}
+    %input{type: 'hidden', name: "#{fragment_name}[address_state]", value: 1}
+
+    .row
+      .col-md-12
+        .form-group{:class => group_class(address, :company_name)}
+          %input.form-control{type: "text", class: "company_name", placeholder: "Company Name", name: "#{fragment_name}[company_name]", value: address.company_name}
+
+    .row
+      .col-md-12
+        .form-group{:class => group_class(address, :contact_name)}
+          %input.form-control{type: "text", class: "contact_name", placeholder: "Contact Name", name: "#{fragment_name}[contact_name]", value: address.contact_name}
+
+    .row
+      .col-md-12
+        .form-group{:class => group_class(address, :phone)}
+          %input.form-control.phone{type: "text", class: "phone", placeholder: "Phone", name: "#{fragment_name}[phone]", value: address.phone}
+
+
+    .row
+      .col-md-12
+        .form-group{:class => group_class(address, :address_1)}
+          %input.form-control{type: "text", class: "address_1", placeholder: "Address", name: "#{fragment_name}[address_1]", value: address.address_1}
+
+    .row
+      .col-md-12
+        .form-group
+          %input.form-control{type: "text", class: "address_2", placeholder: "Address Line 2", name: "#{fragment_name}[address_2]", value: address.address_2}
+
+    .row
+      .col-md-6
+        .form-group{:class => group_class(address, :city)}
+          %input.form-control{type: "text", class: "city", placeholder: "City", name: "#{fragment_name}[city]", value: address.city}
+      .col-md-3
+        .form-group
+          %select.form-control{name: "#{fragment_name}[state]", class: "state"}
+            %option{:value => 'AL', :selected => address.state == 'AL'} AL
+            %option{:value => 'AK', :selected => address.state == 'AK'} AK
+            %option{:value => 'AZ', :selected => address.state == 'AZ'} AZ
+            %option{:value => 'AR', :selected => address.state == 'AR'} AR
+            %option{:value => 'CA', :selected => address.state == 'CA'} CA
+            %option{:value => 'CO', :selected => address.state == 'CO'} CO
+            %option{:value => 'CT', :selected => address.state == 'CT'} CT
+            %option{:value => 'DE', :selected => address.state == 'DE'} DE
+            %option{:value => 'FL', :selected => address.state == 'FL'} FL
+            %option{:value => 'GA', :selected => address.state == 'GA'} GA
+            %option{:value => 'HI', :selected => address.state == 'HI'} HI
+            %option{:value => 'ID', :selected => address.state == 'ID'} ID
+            %option{:value => 'IL', :selected => address.state == 'IL'} IL
+            %option{:value => 'IN', :selected => address.state == 'IN'} IN
+            %option{:value => 'IA', :selected => address.state == 'IA'} IA
+            %option{:value => 'KS', :selected => address.state == 'KS'} KS
+            %option{:value => 'KY', :selected => address.state == 'KY'} KY
+            %option{:value => 'LA', :selected => address.state == 'LA'} LA
+            %option{:value => 'ME', :selected => address.state == 'ME'} ME
+            %option{:value => 'MD', :selected => address.state == 'MD'} MD
+            %option{:value => 'MA', :selected => address.state == 'MA'} MA
+            %option{:value => 'MI', :selected => address.state == 'MI'} MI
+            %option{:value => 'MN', :selected => address.state == 'MN'} MN
+            %option{:value => 'MS', :selected => address.state == 'MS'} MS
+            %option{:value => 'MO', :selected => address.state == 'MO'} MO
+            %option{:value => 'MT', :selected => address.state == 'MT'} MT
+            %option{:value => 'NE', :selected => address.state == 'NE'} NE
+            %option{:value => 'NV', :selected => address.state == 'NV'} NV
+            %option{:value => 'NH', :selected => address.state == 'NH'} NH
+            %option{:value => 'NJ', :selected => address.state == 'NJ'} NJ
+            %option{:value => 'NM', :selected => address.state == 'NM'} NM
+            %option{:value => 'NY', :selected => address.state == 'NY'} NY
+            %option{:value => 'NC', :selected => address.state == 'NC'} NC
+            %option{:value => 'ND', :selected => address.state == 'ND'} ND
+            %option{:value => 'OH', :selected => address.state == 'OH'} OH
+            %option{:value => 'OK', :selected => address.state == 'OK'} OK
+            %option{:value => 'OR', :selected => address.state == 'OR'} OR
+            %option{:value => 'PA', :selected => address.state == 'PA'} PA
+            %option{:value => 'RI', :selected => address.state == 'RI'} RI
+            %option{:value => 'SC', :selected => address.state == 'SC'} SC
+            %option{:value => 'SD', :selected => address.state == 'SD'} SD
+            %option{:value => 'TN', :selected => address.state == 'TN'} TN
+            %option{:value => 'TX', :selected => address.state == 'TX'} TX
+            %option{:value => 'UT', :selected => address.state == 'UT'} UT
+            %option{:value => 'VT', :selected => address.state == 'VT'} VT
+            %option{:value => 'VA', :selected => address.state == 'VA'} VA
+            %option{:value => 'WA', :selected => address.state == 'WA'} WA
+            %option{:value => 'WV', :selected => address.state == 'WV'} WV
+            %option{:value => 'WI', :selected => address.state == 'WI'} WI
+            %option{:value => 'WY', :selected => address.state == 'WY'} WY
+      .col-md-3
+        .form-group{:class => group_class(address, :zip), :style => 'margin-top: 5px;'}
+          = address.zipcode

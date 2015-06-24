@@ -1,0 +1,11 @@
+development:
+  quote_service_key: "_42QY19EHT"
+  wsdl_file: "mfw_dev.wsdl"
+  stripe_recipient: "rp_15mVjjCzjCv8WaEoyae9s3BP"
+  carrier_wsdl_file: "mfw_carrier.wsdl"
+
+production:
+  quote_service_key: "_42QY19EHT"
+  wsdl_file: "mfw.wsdl"
+  stripe_recipient: ""
+  carrier_wsdl_file: "mfw_carrier.wsdl"

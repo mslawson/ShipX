@@ -1,0 +1,162 @@
+#shipment_parts-payment{'data-id' => @shipment.id}
+  = form_for @shipment, :url => shipment_shipment_part_path(@shipment, params[:id]), :as => :shipment, :id => 'payment-form' do |f|
+
+    = render partial: 'shipment_sidebar', locals: {temp: 'results', shipment: @shipment}
+
+    .col-md-9.pad-30.extend-30.with-sidebar
+      = render 'progress'
+      %h1 Payment
+
+      .col-md-12.pad-0
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title Payment Info
+          .panel-body
+            .alert-boxes
+              - if @shipment.errors.count > 0
+                .alert.alert-danger
+                  %b Error:
+                  = @shipment.errors.to_a.join(", ")
+              - if @shipment.status == Shipment::SHIPMENT_STATUS_ERROR
+                .alert.alert-danger
+                  %b Error:
+                  = @shipment.error_message
+
+            -#.row
+            -#  .col-md-6
+            -#    .row
+            -#      .col-md-12
+            -#        %b Ready for Pickup On:
+            -#        = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'location_info')
+            -#        %br
+            -#        = @shipment.pickup_date
+            -#        %br
+            -#        %br
+            -#    .row
+            -#      .col-md-6
+            -#        %b Origin:
+            -#        = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'location_info')
+            -#        %br
+            -#        = render partial: 'addresses/show', locals: {address_type: 'origin', address: @shipment.origin_address}
+            -#      .col-md-6
+            -#        %b Destination:
+            -#        = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'location_info')
+            -#        %br
+            -#        = render partial: 'addresses/show', locals: {address_type: 'destination', address: @shipment.destination_address}
+            -#  .col-md-6{:style => 'height: 250px;'}
+            -#    = render partial: 'shipment/map', locals: {shipment: @shipment}
+            -#
+            -#.row
+            -#  .col-md-12
+            -#    %br
+            -#    %b Freight:
+            -#    = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'freight')
+            -#    %br
+            -#    = render partial: 'shipment/freight_ro', locals: {shipment: @shipment, readonly: true, show_nmfc: true}
+            -#
+
+            .row
+              .col-md-12
+                %b Selected Quote:
+                = link_to "(edit)", edit_shipment_shipment_part_path(@shipment, 'results')
+              .col-md-10.col-md-offset-1.well
+                - quote = @shipment.selected_quote_object
+                .col-md-6
+                  %table.invisible-table
+                    %tr
+                      %td.text-left
+                        %b Carrier
+                      %td.text-right
+                        = quote["display_name"]
+                    %tr
+                      %td.text-left
+                        %b Delivery Time
+                      %td.text-right
+                        = pluralize(quote["delivery_days"].to_i, "day")
+                .col-md-6
+                  %table.invisible-table
+                    %tr
+                      %td.text-left
+                        %b Total Price
+                      %td.text-right
+                        = format("$%.2f",@shipment.total_price)
+                    %tr
+                      %td.text-left
+                        %b Expected Delivery
+                      %td.text-right
+                        = (@shipment.pickup_date + quote['delivery_days'].to_i.days).strftime("%Y-%m-%d")
+
+
+            .row
+              .col-md-12
+                %b Payment:
+
+              .col-md-10.col-md-offset-1.well
+                - if user_signed_in?
+
+                  %table.table.table-striped
+
+                    - current_user.payment_methods.each do |pm|
+
+                      - if pm.is_loc?
+                        - next unless current_user.has_approved_credit_line? && (current_user.credit_application.available_credit >= (quote['total_price'].to_f+@shipment.shipx_fee.to_f))
+
+                      %tr
+                        %td
+                          %input{type: 'radio', name: 'payment_method', value: pm.id}
+                        %td
+                          = pm.description
+
+                    - if current_user.payment_methods.count > 0
+                      %tr
+                        %td
+                          %input{type: 'radio', name: 'payment_method', value: 'new'}
+                        %td
+                          New Credit Card
+
+                  .row#new_payment_method{class: if current_user.payment_methods.count > 0 then 'hidden' else '' end}
+                    .col-md-12
+
+                      .form-group
+                        %label Name on Card
+                        %input.form-control{:name => 'shipment[payment_card_name]', :placeholder => "Name on Card"}
+
+                      .form-group.error
+                        %label Card Number
+                        %input.form-control{:name => 'shipment[payment_card_number]', :placeholder => "Card Number", :autocomplete => "off", 'data-stripe' => 'number'}
+
+                      .form-group
+                        %label Card Expiration
+                        .row
+                          .col-md-4
+                            .col-md-6
+                              %select.form-control{:name => 'shipment[payment_card_exp_month]', 'data-stripe' => 'exp-month'}
+                                - (1..12).each do |month|
+                                  %option= month
+                            .col-md-6
+                              %select.form-control{:name => 'shipment[payment_card_exp_year]', 'data-stripe' => 'exp-year'}
+                                - (0..10).each do |yr|
+                                  - year = Date.today.year + yr
+                                  %option= year
+
+                      .form-group
+                        %label Card CVV Code
+                        .row
+                          .col-md-2
+                            %input.form-control{:name => 'shipment[payment_card_cvv]', :placeholder => "Card CVV", :autocomplete => "off", 'data-stripe' => 'cvc'}
+
+            %input{:name => 'shipment[payment_method_id]', type: 'hidden'}
+
+            .well
+              %input{:type => :checkbox, :name => 'shipment[tc]', :required => 'true'}
+              I agree to all the
+              %a{'data-toggle' => 'modal', 'data-target' => "#terms_and_conditions"} terms and conditions
+              %input{:type => :hidden, :name => 'shipment[status]', :value => Shipment::SHIPMENT_STATUS_INPROCESS}
+              %input{:type => :hidden, :name => 'commit', :value => 'continue'}
+              %br
+              %b
+                The price quoted is based on the dimensional information you provided and your description of the pickup and delivery locations.  Please review these carefully for accuracy as any variation will result in additional charges.  ShipX reserves the right to bill your credit card these additional charges plus a $15 service fee.
+
+            %button.btn.btn-primary{:id => 'continue-button'} Make Payment and Complete Order
+
+= render :partial => 'shared/terms_and_conditions'

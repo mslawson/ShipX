@@ -1,0 +1,64 @@
+#shipment_parts-location
+  = form_for @shipment, :url => shipment_shipment_part_path(@shipment, params[:id]), :as => :shipment do |f|
+
+    = render partial: 'shipment_sidebar', locals: {temp: 'location'}
+
+    .col-md-9.pad-30.extend-30.with-sidebar
+      = render 'progress'
+
+      %h1 Location Info
+
+      .col-md-12.pad-0
+        .panel.panel-default
+          .panel-summary
+            %p Enter an origin and destination address and select your desired pickup date
+          .panel-body
+
+            - if @shipment.errors.count > 0
+              .row
+                .col-md-12
+                  .alert.alert-danger
+                    %b Error:
+                    All fields highlighted below must be completed.
+                    / = @shipment.errors.to_a.join(", ")
+
+
+            .row
+              .col-md-6
+
+                %h5 Origin Postal Code
+                = render partial: 'addresses/zipcodeonly_fragment', locals: {address_type: 'origin', fragment_name: "shipment[origin_address_attributes]", address: @shipment.origin_address}
+
+              .col-md-6
+
+                %h5 Destination Postal Code
+                = render partial: 'addresses/zipcodeonly_fragment', locals: {address_type: 'destination', fragment_name: "shipment[destination_address_attributes]", address: @shipment.destination_address}
+          
+            .row
+              .col-md-4
+                %h5 Shipment Ready for Pickup
+                .control-group{:class => group_class(@shipment, :pickup_date)}
+                  .controls
+                    .input-group
+                      %input.date-picker.form-control{id: 'date-picker', name: 'shipment[pickup_date]', value: @shipment.pickup_date ? @shipment.pickup_date.strftime("%Y-%m-%d %l:%M %p") : ''}
+                      %label.input-group-addon.btn{for: 'date-picker'}
+                        %span.glyphicon.glyphicon-calendar
+           
+            
+              .col-md-6
+                .col-md-offset-4
+                  .offset-15
+                    %br
+                    %p 
+                      Have a shipment going outside of the US?  
+                      Click here:
+                      %a{:href => "mailto:support@myfreightworld.com", :style => "color:#ff6c00"}MyFreightWorld
+                      
+
+
+
+          %br
+
+      %button.btn.btn-primary.btn-lg{:name => 'commit', :value => "continue"} Continue
+
+  //- content_for :scripts, ( javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js', '//maps.google.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en-US' )

@@ -1,0 +1,27 @@
+
+.row{'style' => 'margin-top: 25px'}
+  .col-md-8.col-md-offset-2
+    .panel-group#accordion
+      .panel.panel-default
+        .panel-heading#headingOne{"role" => "tab"}
+          %h4.panel-title
+            %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapseOne', 'aria-expanded' => 'false', 'aria-controls' => 'collapseOne'}
+              Shipment Details (click to expand)
+        #collapseOne.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingOne'}
+          .panel-body
+            = render "shipment/complete"
+
+%form{method: 'POST', action: do_new_charge_admin_shipment_path(@shipment)}
+  %input{type: 'hidden', name: 'authenticity_token', value: form_authenticity_token}
+  .row{'style' => 'margin-top: 25px'}
+    .col-md-8.col-md-offset-2
+      %h4 New Charge
+      %table.table.table-striped
+        %tr
+          %td
+            %b Amount to Charge
+          %td
+            %input.form-control{type: 'text', name: 'amount'}
+        %tr
+          %td{colspan: 2}= "Fees of #{number_to_currency(ConfigurationItem.addon_shipx_fee)} + #{number_to_currency(ConfigurationItem.fixed_service_fee)} + #{(ConfigurationItem.var_service_fee * 100).round(2)}% will be added automatically"
+      %button.btn.btn-primary Charge

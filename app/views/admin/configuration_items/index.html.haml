@@ -1,0 +1,30 @@
+.row{style: 'margin-top: 25px;'}
+  .col-md-8.col-md-offset-2
+    %table.table.table-striped
+      %caption Configuration Options
+      %thead
+        %tr
+          %th Name
+          %th Current Value
+          %th Actions
+      %tbody
+        %tr
+          %td Standard ShipX Fee
+          %td= number_to_currency(ConfigurationItem.standard_shipx_fee)
+          %td
+            = link_to "Edit", edit_admin_configuration_item_path(ConfigurationItem::CONFIG_KEY_SHIPX_FEE)
+        %tr
+          %td Extra Charge ShipX Fee (for carrier re-calculations)
+          %td= number_to_currency(ConfigurationItem.addon_shipx_fee)
+          %td
+            = link_to "Edit", edit_admin_configuration_item_path(ConfigurationItem::CONFIG_KEY_SHIPX_RECHARGE_FEE)
+        %tr
+          %td Processing Fee Fixed Portion
+          %td= number_to_currency(ConfigurationItem.fixed_service_fee)
+          %td
+            = link_to "Edit", edit_admin_configuration_item_path(ConfigurationItem::CONFIG_KEY_SHIPX_FIXED_SERVICE_FEE)
+        %tr
+          %td Processing Fee Variable Portion
+          %td= (ConfigurationItem.var_service_fee * 100).round(1).to_s + "%"
+          %td
+            = link_to "Edit", edit_admin_configuration_item_path(ConfigurationItem::CONFIG_KEY_SHIPX_VAR_SERVICE_FEE)

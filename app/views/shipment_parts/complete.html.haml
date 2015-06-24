@@ -1,0 +1,12 @@
+#shipment_parts-payment{'data-id' => @shipment.id}
+  .row
+    .col-md-10.col-md-offset-1
+      = render 'progress'
+
+    .col-md-10.col-md-offset-1
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Booked Shipment
+        .panel-body
+
+          = render :partial => 'shipment/complete'

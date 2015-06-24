@@ -1,0 +1,2 @@
+module Carrier::AccountHelper
+end

@@ -1,0 +1,44 @@
+#shipment_parts-results{'data-id' => @shipment.id}
+  = form_for @shipment, :url => shipment_shipment_part_path(@shipment, params[:id]), :as => :shipment do |f|
+    %input{:type => :hidden, :name => 'shipment[selected_carrier]', :id => 'selected-carrier'}
+
+    = render partial: 'shipment_sidebar', locals: {temp: 'results', shipment: @shipment}
+
+    .col-md-9.pad-30.extend-30.with-sidebar
+      = render 'progress'
+      %h1 Shipment Results
+
+      .col-md-12.pad-0
+        -#.panel.panel-default
+        -#  .panel-body
+        -#    .col-md-3.pad-0
+        -#      %dl
+        -#        %dt Ready for Pickup on:
+        -#        %dd= @shipment.pickup_date
+        -#
+        -#      %dl
+        -#        %dt Origin Location:
+        -#        %dd
+        -#          = render partial: 'addresses/show', locals: {address_type: 'origin', address: @shipment.origin_address}
+        -#
+        -#      %dl
+        -#        %dt Destination Location:
+        -#        %dd
+        -#          = render partial: 'addresses/show', locals: {address_type: 'destination', address: @shipment.destination_address}
+        -#
+        -#    .col-md-9.pad-0
+        -#
+        -#      %h4 Freight Summary
+        -#
+        -#      = render partial: 'shipment/freight_ro', locals: {shipment: @shipment, readonly: false, show_nmfc: false}
+
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title Select a Quote
+          
+          .panel-body
+            .panel.panel-white
+              = render partial: 'shipment/quotes', locals: {shipment: @shipment}
+
+    
+      %button.btn.btn-primary.btn-lg{:name => 'commit', :id => 'continue-button', :value => "continue", :disabled => :disabled} Continue

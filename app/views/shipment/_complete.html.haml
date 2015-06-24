@@ -1,0 +1,176 @@
+.row
+  .col-md-10.col-md-offset-1.well
+    - quote = @shipment.selected_quote_object
+    .col-md-6
+      %table.invisible-table
+        %tr
+          %td.text-left
+            %b BOL
+          %td.text-right
+            - if @shipment.bol
+              = link_to @shipment.bol, @shipment.bol_file, :target => "_new"
+        %tr
+          %td.text-left
+            %b PRD
+          %td.text-right
+        %tr
+          %td.text-left
+            %b Packing Slip
+          %td.text-right
+            = link_to "Download Now", pdf_shipment_path(@shipment)
+    .col-md-6
+      %table.invisible-table
+        %tr
+          %td.text-left
+            %b Carrier
+          %td.text-right
+            = quote["display_name"]
+        %tr
+          %td.text-left
+            %b Booked On
+          %td.text-right
+            - if @shipment.shipment_events.first
+              = @shipment.shipment_events.first.created_at
+
+.row{style: 'margin-top: 10px;'}
+  .col-md-6
+    .row
+      .col-md-6
+        %b Origin:
+        %br
+        = render partial: 'addresses/show', locals: {address_type: 'origin', address: @shipment.origin_address}
+      .col-md-6
+        %b Destination:
+        %br
+        = render partial: 'addresses/show', locals: {address_type: 'destination', address: @shipment.destination_address}
+
+    .row
+      .col-md-12
+        %br
+        %br
+
+    .row
+      .col-md-6
+        %table.invisible-table
+          %tr
+            %td.text-left
+              %b Pickup
+            %td.text-right
+          %tr
+            %td.text-left
+              Requested
+            %td.text-right
+              = @shipment.pickup_date.strftime("%Y-%m-%d %H:%M")
+          %tr
+            %td.text-left
+              Scheduled
+            %td.text-right
+              = @shipment.pickup_date.strftime("%Y-%m-%d %H:%M")
+          %tr
+            %td.text-left
+              Actual
+            %td.text-right
+
+      .col-md-6
+        %table.invisible-table
+          %tr
+            %td.text-left
+              %b Delivery
+            %td.text-right
+          %tr
+            %td.text-left
+              Estimated
+            %td.text-right
+              = (@shipment.pickup_date + quote['delivery_days'].to_i.days).strftime("%Y-%m-%d")
+          %tr
+            %td.text-left
+              Scheduled
+            %td.text-right
+              = (@shipment.pickup_date + quote['delivery_days'].to_i.days).strftime("%Y-%m-%d")
+          %tr
+            %td.text-left
+              Actual
+            %td.text-right
+
+    .row
+      .col-md-12
+        %br
+        %b Status:
+        %br
+        = render partial: 'shipment/track', locals: {shipment: @shipment}
+
+
+  .col-md-6{:style => 'height: 400px;'}
+    = render partial: 'shipment/map', locals: {shipment: @shipment}
+
+
+.row
+  .col-md-12
+    %br
+    %b Freight:
+    %br
+    = render partial: 'shipment/freight_ro', locals: {shipment: @shipment, show_nmfc: false}
+
+.row
+  .col-md-12
+    %b Selected Quote:
+  .col-md-10.col-md-offset-1.well
+    - quote = @shipment.selected_quote_object
+    .col-md-6
+      %table.invisible-table
+        %tr
+          %td.text-left
+            %b Carrier
+          %td.text-right
+            = quote["display_name"]
+        %tr
+          %td.text-left
+            %b Delivery Time
+          %td.text-right
+            = "#{quote["delivery_days"]} days"
+        %tr
+          %td.text-left
+            %b Expected Delivery
+          %td.text-right
+            = @shipment.pickup_date + quote['delivery_days'].to_i.days
+
+    .col-md-6
+      %table.invisible-table
+        %tr
+          %td.text-left
+            %b Total Price
+          %td.text-right
+            = format("$%.2f",@shipment.total_price)
+
+- if @shipment.payment_method
+  - if @shipment.payment_method.is_cc?
+    .row
+      .col-md-12
+        %b Payment
+      .col-md-10.col-md-offset-1.well
+        .col-md-6
+          %table.invisible-table
+            %tr
+              %td.text-left
+                %b Card Number
+              %td.text-right
+                = "xxxx-xxxx-xxxx-#{@shipment.payment_method.cc_last_four}"
+
+        .col-md-6
+          %table.invisible-table
+            %tr
+              %td.text-left
+                %b Card Expiration
+              %td.text-right
+                = "#{@shipment.payment_method.cc_expiration_month.to_s.rjust(2,"0")}/#{@shipment.payment_method.cc_expiration_year}"
+
+  - elsif @shipment.payment_method.is_loc?
+    .row
+      .col-md-12
+        %b Payment
+      .col-md-10.col-md-offset-1.well
+        .col-md-12
+          %table.invisible-table
+            %tr
+              %td.text-left
+                %b= @shipment.payment_method.description

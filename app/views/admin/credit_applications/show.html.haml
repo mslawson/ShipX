@@ -1,0 +1,104 @@
+
+%br
+
+.row
+
+  .col-md-8.col-md-offset-2
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Credit Application
+      .panel-body
+        = form_for @credit_application, :url => admin_credit_application_path(@credit_application), :as => :credit_application do |f|
+          .col-md-4
+            .form-group
+              = f.label "Current Status"
+              %input{class: ['form-control'], disabled: 'disabled', value: credit_application_status(@credit_application)}
+            .form-group
+              = f.label :company_name
+              = f.text_field :company_name, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :alternate_name
+              = f.text_field :alternate_name, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :contact_name
+              = f.text_field :contact_name, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :title
+              = f.text_field :title, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :phone_number
+              = f.text_field :phone_number, class: ['form-control'], disabled: 'disabled'
+          .col-md-4
+            .form-group
+              = f.label :company_address_1
+              = f.text_field :company_address_1, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :company_address_2
+              = f.text_field :company_address_2, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :city
+              = f.text_field :city, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :state
+              = f.text_field :state, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label :zip_code
+              = f.text_field :zip_code, class: ['form-control'], disabled: 'disabled'
+            .form-group
+              = f.label "Requested Credit Line"
+              = f.text_field :requested_credit_line, class: ['form-control'], disabled: 'disabled'
+          .col-md-4
+            .form-group
+              = f.label "Available Credit"
+              = f.text_field :available_credit, class: ['form-control'], type: 'number', disabled: 'disabled'
+            .form-group
+              = f.label "Approved Credit Line"
+              = f.text_field :approved_credit_line, class: ['form-control'], type: 'number'
+            .form-group
+              = f.label "Notes"
+              = f.text_field :message, class: ['form-control']
+            - if @credit_application.pending?
+              .form-group
+                = f.submit "Approve", class: ['btn', 'btn-info']
+              .form-group
+                = f.submit "Deny", class: ['btn', 'btn-warning']
+            - elsif @credit_application.approved?
+              .form-group
+                = f.submit "Save Changes", class: ['btn', 'btn-info']
+              .form-group
+                = f.submit "Revoke Credit", class: ['btn', 'btn-warning']
+            - elsif @credit_application.denied?
+              .form-group
+                = f.submit "Approve", class: ['btn', 'btn-info']
+
+- if @credit_application.credit_events
+  .row
+
+    .col-md-8.col-md-offset-2
+
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Credit Events
+        .panel-body
+          %table.table
+            %thead
+              %th Shipment
+              %th Credit Amount
+              %th Status
+              %th Actions
+            %tbody
+              - @credit_application.credit_events.order("created_at DESC").each do |credit_event|
+                %tr
+                  %td= "Shipment #{credit_event.shipment.id}"
+                  %td= number_to_currency(credit_event.amount)
+                  %td
+                    - if credit_event.is_open?
+                      %span.label.label-success Pending
+                    - else
+                      %span.label.label-primary Paid
+                  %td
+                    - if credit_event.is_open?
+                      = form_tag admin_mark_event_as_paid_path(credit_event.id) do
+                        = token_tag form_authenticity_token
+                        %button.btn.btn-xs.btn-primary{type: 'submit'} Mark as Paid

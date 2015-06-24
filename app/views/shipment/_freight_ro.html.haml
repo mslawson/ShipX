@@ -1,0 +1,75 @@
+.panel.panel-white
+  %table.table.table-bordered.table-condensed
+    %thead
+      %tr
+        %th Item
+        %th Qty
+        %th Weight
+        %th Class
+        %th Type
+        %th HazMat
+    %tbody
+      - shipment.freight_items.each_with_index do |fi,i|
+        %tr
+          %td.numbered-col= "##{i+1}"
+          %td= fi.quantity
+          %td= "#{fi.weight} lbs"
+          %td= accessorial_name('freight_classes', fi.freight_class_code) || fi.freight_class_code
+          %td= freight_type_name(fi.freight_type)
+          %td
+            %input{:type => :checkbox, :disabled => :disabled, :checked => fi.hazardous?}
+        - if show_nmfc
+          %tr.line-item{'data-id' => fi.id}
+            %td
+              %input.form-control{type: 'hidden', 'data-field' => 'id', value: fi.id}
+            %td{colspan: 2}
+              - if readonly
+                %b Bill of Lading
+                %br
+                = fi.bol_description
+              - else
+                %input.form-control{placeholder: "My Description", 'data-field' => 'bol_description', 'required' => 'true', value: fi.bol_description}
+            %td{colspan: 2}
+              - if readonly
+                %b NMFC
+                %br
+                = fi.nmfc
+              - else
+                %input.form-control{placeholder: "NMFC - (if known)", 'data-field' => 'nmfc', value: fi.nmfc}
+            %td
+              - if readonly
+                %b NMFC Sub
+                %br
+                = fi.nmfc_sub
+              - else
+                %input.form-control{placeholder: "NMFC Sub - (if known)", 'data-field' => 'nmfc_sub', value: fi.nmfc_sub}
+
+.col-md-6
+  - if shipment.accessorials && shipment.accessorials.count > 0
+    - shipment.accessorials.each do |acc|
+      - next if acc.blank?
+      %icon.glyphicon.glyphicon-ok
+      = accessorial_name('pickup_shipment_accessorials', acc) || accessorial_name('delivery_shipment_accessorials', acc)
+      %br
+    %br
+
+- if show_nmfc
+  .col-md-6
+    - if shipment.hazardous?
+      .form-group
+        %label
+          Hazardous Material Contact Phone
+        - if readonly
+          %br
+          = shipment.hazardous_materials_phone
+        - else
+          %input.form-control.phone{name: 'shipment[hazardous_materials_phone]', value: shipment.hazardous_materials_phone}
+
+      .form-group
+        %label
+          Special Instructions
+        - if readonly
+          %br
+          = shipment.special_instructions
+        - else
+          %textarea.form-control{name: 'shipment[special_instructions]'}= shipment.special_instructions

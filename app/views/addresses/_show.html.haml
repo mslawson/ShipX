@@ -1,0 +1,22 @@
+- if address.company_name
+  = address.company_name
+  %br
+- if address.contact_name
+  = address.contact_name
+  %br
+= address.address_1
+%br
+- if !address.address_2.empty?
+  = address.address_2
+  %br
+= "#{address.city}, #{address.state} #{address.zipcode}"
+%br
+- if address.phone
+  = "P: #{address.phone}"
+  %br
+- if address.fax
+  = "F: #{address.fax}"
+  %br
+- if address.email
+  = address.email
+  %br

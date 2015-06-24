@@ -1,0 +1,81 @@
+!!! 5
+%html
+  %head
+    %title ShipX LTL Freight Quotes
+    %meta{charset: "utf-8"}/
+    %meta{content: "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
+    %meta{content: "Fast online LTL (less-than-truckload) quotes and shipment booking. ShipX is a direct freight exchange that provides low prices from top carriers and trucking companies and convenient service without broker or 3PL markup.", name: "description"}/
+    %meta{content: "", name: "author"}/
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+
+    %script{type: 'text/javascript', src: '//use.typekit.net/glj0car.js'}
+    %script{type: 'text/javascript', src: 'https://js.stripe.com/v2/'}
+    = favicon_link_tag 'favicon.ico'
+    :javascript
+      try{Typekit.load();}catch(e){}
+      window.PUBLISH_KEY = "#{STRIPE_PUBLISH_KEY}"
+
+  %body{:id => "#{params[:controller].parameterize}-#{params[:action].parameterize}"}
+    / = google_tag_manager
+    - if params[:controller].parameterize == "home"
+
+    - else
+      .navbar.navbar-fixed-top{role: "navigation"}
+        .container
+          .navbar-header.col-md-1
+            %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+              %span.sr-only Toggle navigation
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            %a.navbar-brand{href: "/"}
+              = image_tag 'shipx_logo_sm.png'
+          .navbar-collapse.collapse
+            %ul.nav.navbar-nav
+              %li.active
+                %a{href: "/"} Home
+              %li
+                %a{href: "http://support.shipxfreight.com/"} Support
+            %ul.nav.navbar-nav.pull-right
+              %li.dropdown.pull-right
+                %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+                  My Account
+                  %b.caret
+                %ul.dropdown-menu
+                  - if user_signed_in?
+                    %li
+                      %a{href: account_path} My Shipments
+                    %li
+                      %a{href: credit_applications_path} Credit Application
+                    %li.divider
+                    - if current_user.admin?
+                      %li
+                        %a{href: '/admin'} Admin Panel
+                      %li.divider
+                    %li
+                      = link_to "Logout", destroy_user_session_path, :method => :delete
+                  - else
+                    %li= link_to "Create Account", new_user_registration_path
+                    %li= link_to "Sign In", new_user_session_path
+
+          / /.nav-collapse
+
+    .container.main-container{:id => "#{params[:controller].parameterize}"}
+
+      - if notice
+        .alert.alert-info
+          = notice
+
+      - if alert
+        .alert.alert-danger
+          = alert
+
+
+      = yield
+
+
+    = yield :scripts
+    = javascript_include_tag 'google_analytics'

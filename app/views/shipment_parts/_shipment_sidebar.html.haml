@@ -1,0 +1,85 @@
+.sidebar.col-md-3.pad-20.extend-30
+
+  %hr
+  
+  %h2 Location Summary
+
+  - if temp == "location"
+    %p Please complete your origin and destination address information on the right
+
+  - else
+    %h3 Origin Location
+
+    %p
+      - if shipment.origin_address.address_state == Address::ADDRESS_STATE_STUB_QUOTE
+        = shipment.origin_address.zipcode
+      - else
+        = shipment.origin_address.address_1
+        %br
+        - if !shipment.origin_address.address_2.blank?
+          = shipment.origin_address.address_2
+          %br
+        = "#{shipment.origin_address.city}, #{shipment.origin_address.state} #{shipment.origin_address.zipcode}"
+
+      %ul.checked
+        - Dictionary.for_code('pickup_location_types').each do |acc|
+          - if acc.key == shipment.origin_address.location_type
+            %li= acc.name
+
+
+    %h3 Destination Location
+
+    %p
+      - if shipment.destination_address.address_state == Address::ADDRESS_STATE_STUB_QUOTE
+        = shipment.destination_address.zipcode
+      - else
+        = shipment.destination_address.address_1
+        %br
+        - if !shipment.destination_address.address_2.blank?
+          = shipment.destination_address.address_2
+          %br
+        = "#{shipment.destination_address.city}, #{shipment.destination_address.state} #{shipment.destination_address.zipcode}"
+
+      %ul.checked
+        - Dictionary.for_code('delivery_location_types').each do |acc|
+          - if acc.key == shipment.destination_address.location_type
+            %li= acc.name
+
+
+    .actions
+      %a.btn.btn-sm.btn-white{type: "button", href: edit_shipment_shipment_part_path(@shipment, 'location_info')} Edit Location
+    
+  %hr
+
+  %h2 Freight Summary
+
+  - if temp == "location"
+    %p After adding your location info and freight details, this area will keep a running summary
+
+
+  - elsif temp == "freight"
+    %p Please complete your freight details on the right
+
+  - else
+    %table.mini
+      - shipment.freight_items.each do |fi|
+        %tr
+          %td.narrow= fi.quantity
+          %td
+            = "#{fi.weight} lbs #{accessorial_name('freight_classes', fi.freight_class_code)} #{pluralize(fi.quantity, freight_type_name(fi.freight_type))}"
+            / %span.label Bill of Lading, NMFC, etc could show here
+            - if fi.accessorials && fi.accessorials.count > 0
+              %br
+              %ul.checked
+                - fi.accessorials.each do |acc|
+                  %li= accessorial_name('freight_accessorials', acc) if accessorial_name('freight_accessorials', acc)
+
+    - if shipment.accessorials && shipment.accessorials.count > 0
+      %ul.checked
+        - shipment.accessorials.each do |acc|
+          - next if acc.blank?
+          %li= accessorial_name('pickup_shipment_accessorials', acc) || accessorial_name('delivery_shipment_accessorials', acc)
+
+
+    .actions
+      %a.btn.btn-sm.btn-white{type: "button", href: edit_shipment_shipment_part_path(@shipment, 'freight')} Edit Freight

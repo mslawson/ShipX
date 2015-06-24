@@ -1,0 +1,6 @@
+%table.table.table-striped
+  %tbody
+    - @shipment.shipment_events.each do |se|
+      %tr
+        %td= se.created_at
+        %td= se.message

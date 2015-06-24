@@ -1,0 +1,78 @@
+/ Main jumbotron for a primary marketing message or call to action
+.jumbotron.splash.over-dark
+  .splash-header.row
+    .col-md-6
+      = image_tag 'shipx_logo_white.png', :class => 'logo'
+      %p.tagline The LTL Freight Exchange
+    .col-md-6.push-5
+      - if user_signed_in?
+        %button.btn.btn-white.btn-sm.btn-splash= link_to "MY ACCOUNT", account_path
+        %p.inline-right Want to view past shipments?
+      - else
+        %button.btn.btn-white.btn-sm.btn-splash= link_to "CARRIER LOGIN", "/carrier/account/login"
+        %button.btn.btn-white.btn-sm.btn-splash= link_to "LOGIN NOW", new_user_session_path
+        %p.inline-right Already a ShipX member?
+    
+
+  %h1 
+    Get immediate, best price quotes
+    %br
+    from the leading carriers
+  
+  = form_for '', :url => shipments_path do |f|
+    %p.center
+      %button.btn.btn-white.btn-lg-sm-text.btn-splash{href: "#", role: "button"} GET A FREE QUOTE
+
+.menu
+  %ul
+    %li
+      %a{:href => "#save-time"} SAVE YOUR TIME
+    %li
+      %a{:href => "#save-money"} SAVE YOUR MONEY
+    %li
+      = form_for '', :url => shipments_path do |f|
+        %a.trig-form-submit GET A FREE QUOTE
+    %li
+      %a{:href => "#who-is-shipx"} WHO IS SHIPX?
+
+.jumbotron.over-light#save-time
+  .col-sm-3
+    = image_tag 'splash_pic_1.png', :class => 'splash-pic-1'
+
+  .col-sm-9
+    %h2 ShipX Saves Your Time
+    %p.quote
+      I don’t ship a lot, but I know what I’m doing.  I don’t want to waste time on the phone telling an agent what I already know so he can enter it into the computer.  I do it myself on ShipX!
+
+    %h3 I saved time, not just money on my shipment
+
+  .col-sm-12
+    = form_for '', :url => shipments_path do |f|
+      %p.center.between-sections
+        %button.btn.btn-primary.btn-lg-sm-text{href: "#", role: "button"} GET A FREE QUOTE
+
+.jumbotron.cars.over-dark#save-money
+  .col-sm-9
+    %h2 ShipX Saves You Money
+    %p.quote
+      I entered dimensions, weight and destination and voila—five quotes from companies I have actually heard of. Clicked on my favorite, entered my credit card and I was done—ready to move on to more important stuff. In the time it takes to buy something on Amazon I had booked my freight!
+
+    %h3 Saving over $100 per shipment, I’ll never go back to shipping through the usual shipping logistics companies.
+
+  .col-sm-3
+    = image_tag 'splash_pic_2.png', :class => 'splash-pic-2'
+
+.jumbotron.over-light#who-is-shipx
+  .col-sm-12
+    %h2 Who Is ShipX?
+    %p.content
+      Founded by shipping and internet professionals who want to give people a simpler, more cost effective way to ship their goods.  
+
+    %p.content
+      We have removed the middleman by combining our cloud based technology with our deep industry relationships to give you access to the best prices and service. Shipping freight should be no more difficult than booking an airline ticket on Travelocity and ShipX is here to prove it!  
+
+    %p.content
+      Suggestions or comments about our service?
+
+    %p.content
+      %a.btn.btn-primary.btn-sm{href: 'mailto:feedback@shipxfreight.com'} LET US KNOW

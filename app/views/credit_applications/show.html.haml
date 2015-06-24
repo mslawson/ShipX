@@ -1,0 +1,19 @@
+
+%br
+
+.row
+
+  .col-md-6.col-md-offset-3
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Credit Application
+      .panel-body
+        %center
+          - if @credit_application.pending?
+            Your credit application is being processed, we will be in contact when it has been reviewed by one of our ShipX staff members.
+          - elsif @credit_application.approved?
+            Your credit application has been approved!  You have a credit limit of
+            %b= number_to_currency(@credit_application.approved_credit_line)
+          - elsif @credit_application.denied?
+            We're sorry, but your credit application has been declined.  For more help, please contact our support staff.

@@ -1,0 +1,19 @@
+#shipment_parts-quoting{'data-id' => @shipment.id}
+  = form_for @shipment, :url => shipment_shipment_part_path(@shipment, params[:id]), :as => :shipment do |f|
+    /= render partial: 'shipment_sidebar', locals: {temp: 'quoting', shipment: @shipment}
+
+    .col-md-12.pad-30.extend-30
+      %h1 Searching...
+
+      .col-md-12.pad-0
+        .panel.panel-default
+          .panel-body
+
+            .text-center
+
+              = image_tag "progress.gif"
+
+              %h3 Retrieving Quotes
+              %h4 Please wait while we compile the latest quotes from leading carriers.
+
+            %input{:type => 'hidden', :name => 'commit', :value => "continue"}

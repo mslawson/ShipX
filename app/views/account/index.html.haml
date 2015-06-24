@@ -1,0 +1,62 @@
+.account
+  %h3 Booked Shipments
+  - if @current_user.shipments.booked.count > 0
+    - @current_user.shipments.booked.order('created_at desc').each do |shipment|
+      .row
+        .col-md-12.well
+          .col-md-3
+            = shipment.created_at
+          .col-md-3
+            %b From
+            = address_short_name(shipment.origin_address) if shipment.origin_address
+          .col-md-3
+            %b To
+            = address_short_name(shipment.destination_address) if shipment.destination_address
+          .col-md-3
+            %a.btn.btn-primary.btn-xs{href: track_shipment_path(shipment)} Track
+  - else 
+    %p You don't currently have any booked shipments.
+
+
+  / - if @current_user.shipments.active.count > 0
+  %h3 Open Shipments
+  - if @current_user.shipments.active.count > 0   
+    %p Want to finish a previously started shipment?  Just click resume on a shipment below.
+    - @current_user.shipments.active.order('created_at desc').each do |shipment|
+      .row
+        .col-md-12.well
+          .col-md-3
+            = shipment.created_at
+          .col-md-3
+            %b From
+            = address_short_name(shipment.origin_address) if shipment.origin_address
+          .col-md-3
+            %b To
+            = address_short_name(shipment.destination_address) if shipment.destination_address
+          .col-md-3
+            %a.btn.btn-primary.btn-xs{href: edit_shipment_shipment_part_path(shipment, 'location_info')}
+              Resume
+
+  - else
+    %p You don't currently have any open shipments.
+    = form_for '', :url => shipments_path do |f|
+      %button.btn.btn-primary.btn-lg-sm-text{href: "#", role: "button"} GET A FREE QUOTE
+
+  %h3 Delivered Shipments
+  - if @current_user.shipments.delivered.count > 0
+    - @current_user.shipments.delivered.order('created_at desc').each do |shipment|
+      .row
+        .col-md-12.well
+          .col-md-3
+            = shipment.created_at
+          .col-md-3
+            %b From
+            = address_short_name(shipment.origin_address) if shipment.origin_address
+          .col-md-3
+            %b To
+            = address_short_name(shipment.destination_address) if shipment.destination_address
+          .col-md-3
+            %a.btn.btn-primary.btn-xs{href: track_shipment_path(shipment)} Info
+  - else
+    %p You don't currently have any delivered shipments.
+    

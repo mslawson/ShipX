@@ -1,0 +1,43 @@
+
+.row{'style' => 'margin-top: 25px'}
+  .col-md-8.col-md-offset-2
+    .panel-group#accordion
+      .panel.panel-default
+        .panel-heading#headingOne{"role" => "tab"}
+          %h4.panel-title
+            %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapseOne', 'aria-expanded' => 'false', 'aria-controls' => 'collapseOne'}
+              Shipment Details (click to expand)
+        #collapseOne.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingOne'}
+          .panel-body
+            = render "shipment/complete"
+
+.row{'style' => 'margin-top: 25px'}
+  .col-md-8.col-md-offset-2
+    %h4 Payment Details
+    %table.table.table-striped
+      - @shipment.payments.order("id asc").each_with_index do |payment,i|
+        %tr
+          %td= payment.created_at
+          %td{colspan: 2}
+            - if i == 0
+              %b= "Primary Debit (#{payment.transaction_id})"
+            - else
+              = "Add-on Charge (#{payment.transaction_id})"
+          %td
+            = number_to_currency(payment.amount)
+        - payment.payment_splits.each do |ps|
+          %tr.greyed
+            %td &nbsp;
+            %td &nbsp;
+            %td= ps.fund_description
+            %td= number_to_currency(ps.amount)
+
+- unless @shipment.status == Shipment::SHIPMENT_STATUS_DELIVERED
+  .row{'style' => 'margin-top: 25px'}
+    .col-md-8.col-md-offset-2
+      %a.btn.btn-primary{href: new_charge_admin_shipment_path(@shipment)} Add New Charge
+      %br
+      %br
+      %form{method: 'POST', action: complete_order_admin_shipment_path(@shipment)}
+        %input{type: 'hidden', name: 'authenticity_token', value: form_authenticity_token}
+        %button.btn.btn-primary Complete Order

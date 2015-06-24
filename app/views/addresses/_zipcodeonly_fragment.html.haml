@@ -1,0 +1,25 @@
+- address ||= Address.new
+.address-fragment
+  - unless address.new_record?
+    %input{type: 'hidden', name: "#{fragment_name}[id]", value: address.id}
+
+  .input-fields
+
+    .row
+      .col-md-3
+        .form-group{:class => group_class(address, :zip)}
+          %input.form-control{type: "text", placeholder: "Zip", class: "zipcode", name: "#{fragment_name}[zipcode]", value: address.zipcode}
+
+    .row
+      .col-md-12
+        .form-group
+
+          - if address_type == "origin"
+            - accessorials = Dictionary.for_code('pickup_location_types')
+          - else
+            - accessorials = Dictionary.for_code('delivery_location_types')
+
+          %select.form-control{name: "#{fragment_name}[location_type]"}
+
+            - accessorials.each do |acc|
+              %option{value: acc.key, selected: address.location_type == acc.key}= acc.name

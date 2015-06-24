@@ -1,0 +1,236 @@
+!!! 5
+%html
+  %head
+    %title= yield(:title)
+    %meta{charset: "utf-8"}/
+    %meta{content: "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
+    %meta{content: "Fast online LTL (less-than-truckload) quotes and shipment booking. ShipX is a direct freight exchange that provides low prices from top carriers and trucking companies and convenient service without broker or 3PL markup.", name: "description"}/
+    %meta{content: "", name: "author"}/
+    = stylesheet_link_tag    'carrier', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'carrier', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    -if !@carrier_signed_in
+      .container-fluid.main-container
+        - if @notice
+          .row
+            .alert.alert-info.col-md-9
+              = @notice
+
+        - if @error
+          .row
+            .alert.alert-danger.col-md-9
+              = @error
+
+        = yield
+      = yield :scripts
+    - else
+      #wrapper
+        - if @carrier_signed_in
+          #sidebar-wrapper
+            .top-panel
+              %a.sidebar-brand{:href => '/'}
+                = image_tag 'shipxconnect_logo.png'
+            %ul.sidebar-nav
+              %li
+                %a{:class => 'page-link', :data => {'page-type' => 'dashboard'}}
+                  %span.glyphicon.glyphicon-th-large
+                  Dashboard
+              %li
+                %a{:class => 'page-link', :data => {'page-type' => 'regions'}}
+                  %span.glyphicon.glyphicon-globe
+                  Regions
+              %li
+                %a{:class => 'page-link', :data => {'page-type' => 'tariffs'}}
+                  %span.glyphicon.glyphicon-usd
+                  Default Pricing
+              %li
+                %a{:class => 'page-link', :data => {'page-type' => 'lanes'}}
+                  %span.glyphicon.glyphicon-sort
+                  Lanes
+              %li
+                %a{:href => "http://support.shipxfreight.com/", :target => "_blank"}
+                  %span.glyphicon.glyphicon-question-sign
+                  Support
+              %li
+                %a{:class => 'page-link', :data => {'page-type' => 'settings'}}
+                  %span.glyphicon.glyphicon-cog
+                  Settings
+        #page-content-wrapper
+          - if @carrier_signed_in
+            .top-panel
+              %a#menu-toggle.btn.btn-default{:href => "#menu-toggle"} Toggle Menu
+              %span.page-title#page-title
+              .dropdown.pull-right
+                %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+                  Carrier Account
+                  %b.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{href: '/carrier/account/logout'} Logout
+              %span.page-actions.pull-right#page-actions Hey There
+          .container-fluid.main-container
+            - if @notice
+              .row
+                .alert.alert-info.col-md-9
+                  = @notice
+
+            - if @error
+              .row
+                .alert.alert-danger.col-md-9
+                  = @error
+            .row#page-container
+              = yield
+      #modalDialogForm.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                %span{"aria-hidden" => "true"} ×
+              %h4#modalDialogTitle.modal-title
+            .modal-body#modalDialogBody
+            .modal-footer
+              %button.btn.btn-danger{"data-dismiss" => "modal", :type => "button"} Close
+              %button.btn.btn-success#modalDialogSubmit{:type => "button"} Save changes
+      #deleteConfirmDialogForm.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                %span{"aria-hidden" => "true"} ×
+              %h4#deleteConfirmMessage.modal-title
+            .modal-footer
+              %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
+              %button.btn.btn-danger#deleteConfirmBtn{:type => "button"} Delete
+      %form.html-template#add-region-form{:role => "form"}
+        .form-group
+          %label{:for => "name"} Region Name:
+          %input#email.form-control{:placeholder => "Enter region name", :type => "text", :required => "true", :name => "name"}
+        .checkbox
+          %label
+            %input{:type => "checkbox", :name => "active", :checked => "true"}
+            Active
+      %form.html-template#add-region-state-form{:role => "form"}
+        .form-group
+          %label{:for => "state"} State:
+          %input#email.form-control{:placeholder => "Enter state", :type => "text", :required => "true", :name => "state"}
+        .checkbox
+          %label
+            %input{:type => "checkbox", :name => "excluded"}
+            Excluded
+      %form.html-template#add-region-zip-form{:role => "form"}
+        .form-group
+          %label{:for => "zipCode"} Zip:
+          %input#email.form-control{:placeholder => "Enter zip code", :type => "number", :required => "true", :name => "zipCode"}
+        .checkbox
+          %label
+            %input{:type => "checkbox", :name => "excluded"}
+            Excluded
+      %form.html-template#add-region-zip-range-form{:role => "form"}
+        .form-group
+          %label{:for => "startingZipCode"} Starting Zip:
+          %input#email.form-control{:placeholder => "Enter starting zip code", :type => "number", :required => "true", :name => "startingZipCode"}
+        .form-group
+          %label{:for => "endingZipCode"} Ending Zip:
+          %input#email.form-control{:placeholder => "Enter ending zip code", :type => "number", :required => "true", :name => "endingZipCode"}
+        .checkbox
+          %label
+            %input{:type => "checkbox", :name => "excluded"}
+            Excluded
+      %form.html-template#add-lane-form{:role => "form"}
+        .form-group
+          %label{:for => "origin"} Origin:
+          %select#origin.form-control{:name => "origin"}
+        .form-group
+          %label{:for => "destination"} Destination:
+          %select#destination.form-control{:name => "destination"}
+        .form-group
+          %label{:for => "costFactor"} Discount:
+          .input-group
+            %input#costFactor.form-control{:placeholder => "Enter Discount", :type => "number", :name => "costFactor"}
+            %span.input-group-addon %
+          .checkbox
+            %label
+              %input{:type => "checkbox", :name => "costFactorUseDefault"}
+              Use Default
+        .form-group
+          %label{:for => "minimumCharge"} Minimum Charge:
+          .input-group
+            %span.input-group-addon $
+            %input#minimumCharge.form-control{:placeholder => "Enter minimum charge", :type => "number", :name => "minimumCharge"}
+          .checkbox
+            %label
+              %input{:type => "checkbox", :name => "minimumChargeUseDefault"}
+              Use Default
+      %form.html-template#add-lane-scheduled-pricing-form{:role => "form"}
+        %fieldset
+          %legend Start Configuration
+          .form-group
+            %label{:for => "startDate"} Start Date:
+            %input#startDate.form-control{:placeholder => "Enter pricing start date (yyyy-mm-dd)", :type => "text", :name => "startDate"}
+          .form-group
+            %label{:for => "costFactor"} Discount:
+            .input-group
+              %input#costFactor.form-control{:placeholder => "Enter Discount", :type => "number", :name => "costFactor"}
+              %span.input-group-addon %
+            .checkbox
+              %label
+                %input{:type => "checkbox", :name => "costFactorUseDefault"}
+                Use Default
+          .form-group
+            %label{:for => "minimumCharge"} Minimum Charge:
+            .input-group
+              %span.input-group-addon $
+              %input#minimumCharge.form-control{:placeholder => "Enter minimum charge", :type => "number", :name => "minimumCharge"}
+            .checkbox
+              %label
+                %input{:type => "checkbox", :name => "minimumChargeUseDefault"}
+                Use Default
+        %fieldset
+          %legend End Configuration
+          .form-group
+            %label{:for => "endDate"} End Date:
+            %input#endDate.form-control{:placeholder => "Enter pricing end date (yyyy-mm-dd)", :type => "text", :name => "endDate"}
+          .form-group
+            %label{:for => "restoreCostFactor"} Restore Discount:
+            .input-group
+              %input#restoreCostFactor.form-control{:placeholder => "Enter restore Discount", :type => "number", :name => "restoreCostFactor"}
+              %span.input-group-addon %
+            .checkbox
+              %label
+                %input{:type => "checkbox", :name => "restoreCostFactorUseDefault"}
+                Use Default
+          .form-group
+            %label{:for => "restoreMinimumCharge"} Restore Minimum Charge:
+            .input-group
+              %span.input-group-addon $
+              %input#restoreMinimumCharge.form-control{:placeholder => "Enter restore minimum charge", :type => "number", :name => "restoreMinimumCharge"}
+            .checkbox
+              %label
+                %input{:type => "checkbox", :name => "restoreMinimumChargeUseDefault"}
+                Use Default
+      #errorDialogForm.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                %span{"aria-hidden" => "true"} ×
+              %h4#errorMessage.modal-title
+            .modal-footer
+              %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Ok
+      %form.html-template#update-default-pricing-form{:role => "form"}
+        .form-group
+          %label{:for => "tariffName"} Tariff Name:
+          %input#tariffName.form-control{:disabled => "true", :type => "text", :required => "true", :name => "tariffName"}
+        .form-group
+          %label{:for => "Discount"} Discount:
+          .input-group
+            %input#discount.form-control{:placeholder => "Enter default discount percentage", :type => "number", :required => "true", :name => "discount"}
+            %span.input-group-addon %
+
+      %form.html-template#upload-file-form{:role => "form"}
+        .form-group
+          %label{:for => "file"} Choose a file to upload:
+          %input#file.form-control{:type => "file", :required => "true", :name => "file"}
+      = yield :scripts
